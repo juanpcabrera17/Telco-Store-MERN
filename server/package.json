@@ -1,0 +1,39 @@
+{
+  "name": "entregafinal",
+  "version": "1.0.0",
+  "description": "Entrega del proyecto final del curso de backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js mongo",
+    "mongo": "nodemon server.js mongo",
+    "file": "node server.js file"
+  },
+  "author": "Juan Pablo Cabrera",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "compression": "^1.7.4",
+    "connect-mongo": "^4.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.7",
+    "express-session": "^1.17.3",
+    "mongoose": "^6.9.0",
+    "mongoose-findorcreate": "^3.0.0",
+    "nodemailer": "^6.9.1",
+    "normalizr": "^3.6.2",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "socket.io": "^4.5.3",
+    "twilio": "^4.8.0",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.5.0",
+    "nodemon": "^2.0.20"
+  },
+  "engines": {
+    "node": "<=18"
+  }
+}

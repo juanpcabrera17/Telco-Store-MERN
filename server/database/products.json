@@ -1,0 +1,68 @@
+[{
+	"_id": "001",
+	"name": "Antena Parabolica",
+	"price": 200,
+	"thumbnail": "https://i.ibb.co/ZSRj4nw/antena-1.png",
+	"category": "antenas"
+}, {
+	"_id": "002",
+	"name": "Switch",
+	"price": 310,
+	"thumbnail": "https://i.ibb.co/7yfnTJD/switch-1.png",
+	"category": "switches"
+}, {
+	"_id": "003",
+
+	"name": "Router WiFi",
+	"price": 305,
+	"thumbnail": "https://i.ibb.co/TgDKLYD/router-1.png",
+	"category": "routers"
+}, {
+	"_id": "004",
+	"name": "Antena Yagi",
+	"price": 140,
+	"thumbnail": "https://www.eiffelweb.com.ar/wp-content/uploads/2016/07/yagui-9-tdt-vigente.jpg",
+	"category": "antenas"
+}, {
+	"_id": "005",
+	"name": "Router Cisco 8000",
+	"price": 4350,
+	"thumbnail": "https://ciscolicense.com/wp-content/uploads/2022/03/Cisco-8000-Series-Routers-License-04.jpg",
+	"category": "routers"
+}, {
+	"_id": "006",
+	"name": "Switch Cisco CBS220",
+	"price": 3100,
+	"thumbnail": "https://microglobalpromos.com.ar/2021/img/112021/CBS220-48T-4G-AR_1.jpg",
+	"category": "switches"
+}, {
+	"_id": "007",
+	"name": "Rack para servidor Apc Netshelter Sv 42u Ar2400fp1",
+	"price": 2040,
+	"thumbnail": "https://http2.mlstatic.com/D_NQ_NP_611017-MLA43580679260_092020-O.webp",
+	"category": "otros"
+}, {
+	"_id": "008",
+	"name": "Cable de red Cat 6 x 20mts",
+	"price": 510,
+	"thumbnail": "https://http2.mlstatic.com/D_NQ_NP_937764-MLA49414121277_032022-O.webp",
+	"category": "otros"
+}, {
+	"_id": "009",
+	"name": "Access Point Ubiquiti UniFi AC Mesh",
+	"price": 724,
+	"thumbnail": "https://http2.mlstatic.com/D_NQ_NP_840450-MLA31626555044_072019-O.webp",
+	"category": "routers"
+}, {
+	"_id": "010",
+	"name": "Access point interior Ubiquiti UniFi AC Lite",
+	"price": 620,
+	"thumbnail": "https://http2.mlstatic.com/D_NQ_NP_766297-MLA51699207776_092022-O.webp",
+	"category": "routers"
+}, {
+	"_id": "011",
+	"name": "Router Mikrotik RouterBoard",
+	"price": 1040,
+	"thumbnail": "https://http2.mlstatic.com/D_NQ_NP_689325-MLA46653221658_072021-O.webp",
+	"category": "routers"
+}]
