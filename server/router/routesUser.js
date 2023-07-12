@@ -25,9 +25,9 @@ routerUser.get('/:userId', controllerGetUserById);
 routerUser.put('/:userId', controllerPutUserById);
 routerUser.delete('/:userId', controllerDeleteUserById);
 
-routerUser.post('/register', controllerPostRegister);
+routerUser.post('/register', passport.authenticate('signup'), controllerPostRegister);
 
-routerUser.post('/login', controllerPostLogin);
+routerUser.post('/login', passport.authenticate('login'), controllerPostLogin);
 
 /* routerUser.get('/faillogin', controllerGetFailLogin);
 

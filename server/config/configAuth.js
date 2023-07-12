@@ -19,13 +19,13 @@ passport.use(
 	'login',
 	new LocalStrategy(
 		{
-			usernameField: 'idEmail',
+			usernameField: 'email',
 		},
-		(idEmail, password, done) => {
-			User.findOne({ idEmail }, (err, user) => {
+		(email, password, done) => {
+			User.findOne({ email }, (err, user) => {
 				if (err) return done(err);
 				if (!user) {
-					loggerWarn.info('Ningun usuario encontrado con el email ' + idEmail);
+					loggerWarn.info('Ningun usuario encontrado con el email ' + email);
 					return done(null, false);
 				}
 				if (!isValidPassword(user, password)) {
@@ -43,10 +43,10 @@ passport.use(
 	new LocalStrategy(
 		{
 			passReqToCallback: true,
-			usernameField: 'idEmail',
+			usernameField: 'email',
 		},
-		(req, idEmail, password, done) => {
-			User.findOne({ idEmail: idEmail }, (err, user) => {
+		(req, email, password, done) => {
+			User.findOne({ email: email }, (err, user) => {
 				if (err) {
 					loggerError.error('Error en el signup: ' + err);
 					return done(err);
@@ -56,22 +56,24 @@ passport.use(
 					return done(null, false);
 				}
 				const newUser = {
-					idEmail: idEmail,
-					username: req.body.username,
+					firstName: req.body.firstName,
+					lastName: req.body.lastName,
+					email: email,
 					password: createHash(password),
-					name: req.body.name,
-					surname: req.body.surname,
-					age: req.body.age,
-					alias: req.body.alias,
-					phoneNumber: req.body.phoneNumber,
-					avatar: req.body.avatar,
+					birthDate: req.body.birthDate,
+					country: req.body.country,
+					streetAddress: req.body.streetAddress,
+					city: req.body.city,
+					region: req.body.region,
+					zipCode: req.body.zipCode,
+					isSubscribed: req.body.isSubscribed,
 				};
 				User.create(newUser, (err, userWithId) => {
 					if (err) {
 						loggerError.error('Error guardando el usuario: ' + err);
 						return done(err);
 					}
-					console.log('newUser: ' + newUser);
+					console.log('newUser: ' + JSON.stringify(newUser));
 					loggerWarn.info('El usuario fue registrado con exito');
 					return done(null, userWithId);
 				});

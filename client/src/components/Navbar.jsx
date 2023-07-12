@@ -1,7 +1,10 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { FaRegUser } from 'react-icons/fa6';
+import { IoCartOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
+import { UserDropdown } from './UserDropdown';
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(' ');
@@ -9,6 +12,9 @@ function classNames(...classes) {
 
 export const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	/* 	useEffect(() => {
+	}, [user]); */
 
 	return (
 		<Disclosure as="nav" className="bg-gray-800 z-10 sticky">
@@ -65,61 +71,69 @@ export const Navbar = () => {
 											leaveTo="transform opacity-0 scale-95"
 										>
 											<Menu.Items
-												className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+												className="absolute right-0 z-10 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 												onMouseLeave={() => setIsMenuOpen(false)}
 											>
-												<Menu.Item>
-													{({ active }) => (
-														<Link
-															to="/shop/antennas"
-															className={classNames(
-																active ? 'bg-gray-100' : '',
-																'block px-4 py-2 text-sm text-gray-700'
-															)}
-														>
-															Antennas
-														</Link>
-													)}
-												</Menu.Item>
-												<Menu.Item>
-													{({ active }) => (
-														<Link
-															to="/shop/switches"
-															className={classNames(
-																active ? 'bg-gray-100' : '',
-																'block px-4 py-2 text-sm text-gray-700'
-															)}
-														>
-															Switches
-														</Link>
-													)}
-												</Menu.Item>
-												<Menu.Item>
-													{({ active }) => (
-														<Link
-															to="/shop/routers"
-															className={classNames(
-																active ? 'bg-gray-100' : '',
-																'block px-4 py-2 text-sm text-gray-700'
-															)}
-														>
-															Routers
-														</Link>
-													)}
-												</Menu.Item>
-												<Menu.Item>
-													{({ active }) => (
-														<Link
-															to="/shop/others"
-															className={classNames(
-																active ? 'bg-gray-100' : '',
-																'block px-4 py-2 text-sm text-gray-700'
-															)}
-														>
-															Others
-														</Link>
-													)}
-												</Menu.Item>
+												<div className="py-1">
+													<Menu.Item>
+														{({ active }) => (
+															<Link
+																to="/shop/antennas"
+																className={classNames(
+																	active ? 'bg-gray-100' : '',
+																	'block px-4 py-2 text-sm text-gray-700'
+																)}
+															>
+																Antennas
+															</Link>
+														)}
+													</Menu.Item>
+												</div>
+												<div className="py-1">
+													<Menu.Item>
+														{({ active }) => (
+															<Link
+																to="/shop/switches"
+																className={classNames(
+																	active ? 'bg-gray-100' : '',
+																	'block px-4 py-2 text-sm text-gray-700'
+																)}
+															>
+																Switches
+															</Link>
+														)}
+													</Menu.Item>
+												</div>
+												<div className="py-1">
+													<Menu.Item>
+														{({ active }) => (
+															<Link
+																to="/shop/routers"
+																className={classNames(
+																	active ? 'bg-gray-100' : '',
+																	'block px-4 py-2 text-sm text-gray-700'
+																)}
+															>
+																Routers
+															</Link>
+														)}
+													</Menu.Item>
+												</div>
+												<div className="py-1">
+													<Menu.Item>
+														{({ active }) => (
+															<Link
+																to="/shop/others"
+																className={classNames(
+																	active ? 'bg-gray-100' : '',
+																	'block px-4 py-2 text-sm text-gray-700'
+																)}
+															>
+																Others
+															</Link>
+														)}
+													</Menu.Item>
+												</div>
 											</Menu.Items>
 										</Transition>
 									</Menu>
@@ -149,9 +163,12 @@ export const Navbar = () => {
 									</li>
 								</ul>
 							</div>
+
 							<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+								<UserDropdown />
+
 								<Link to="/cart">
-									<ShoppingBagIcon className="h-6 w-6" aria-hidden="true" />
+									<IoCartOutline className="text-gray-300 hover:text-white text-3xl" />
 								</Link>
 							</div>
 						</div>

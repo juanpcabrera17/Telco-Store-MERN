@@ -3,15 +3,17 @@ const findOrCreate = require('mongoose-findorcreate');
 
 const userSchema = new Schema(
 	{
-		idEmail: { type: String, required: true, max: 100 },
-		username: { type: String, required: true, max: 100 },
+		firstName: { type: String, required: true, max: 100 },
+		lastName: { type: String, required: true, max: 100 },
+		email: { type: String, required: true, max: 100 },
 		password: { type: String, required: true, max: 100 },
-		name: { type: String, required: true, max: 100 },
-		surname: { type: String, required: true, max: 100 },
-		age: { type: Number, required: true, max: 999 },
-		alias: { type: String, max: 100 },
-		phoneNumber: { type: String, required: true, max: 100 },
-		avatar: { type: String, required: true },
+		birthDate: { type: String, required: true, max: 100 },
+		country: { type: String, required: true, max: 100 },
+		streetAddress: { type: String, required: true, max: 100 },
+		city: { type: String, required: true, max: 100 },
+		region: { type: String, required: true, max: 100 },
+		zipCode: { type: String, required: true, max: 100 },
+		isSubscribed: { type: Boolean },
 	},
 	{ timestamps: true }
 );

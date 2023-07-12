@@ -11,6 +11,16 @@ const { registerEmail } = require('../config/configNodemailer');
 const { loggerWarn, loggerError } = require('../config/configWinston');
 const { passport } = require('../config/configAuth');
 
+const checkAuthentication = (req, res, next) => {
+	if (req.isAuthenticated()) {
+		next();
+	} else {
+		loggerWarn.info('no esta autenticado');
+		res.status(401).json({ error: 'no esta autenticado' });
+		/* res.redirect('/api/usuario/login'); */
+	}
+};
+
 const controllerGetUsers = async (req, res) => {
 	const users = await getUsers();
 	res.status(200).json({ users });
@@ -53,19 +63,12 @@ const controllerPostLogin = async (req, res, next) => {
 		if (!user) {
 			return res.status(400).json({ error: 'The username or password is incorrect' });
 		}
+		/* req.session.userid = user._id; */
 		res.status(201).json({ user });
 	})(req, res, next);
 };
 
-/* const checkAuthentication = (req, res, next) => {
-	if (req.isAuthenticated()) {
-		next();
-	} else {
-		loggerWarn.info('no esta autenticado');
-		res.redirect('/api/usuario/login');
-	}
-}; 
-
+/*
  const controllerGetLogin = (req, res) => {
 	if (req.isAuthenticated()) {
 		res.redirect('/api/productos');
@@ -117,11 +120,11 @@ const controllerPostLogin = async (req, res, next) => {
 }; */
 
 module.exports = {
+	checkAuthentication,
 	controllerGetUsers,
 	controllerGetUserById,
 	controllerPutUserById,
 	controllerDeleteUserById,
-
 	controllerPostRegister,
 	controllerPostLogin,
 

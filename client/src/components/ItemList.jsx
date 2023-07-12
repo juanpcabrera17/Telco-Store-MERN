@@ -10,7 +10,10 @@ export const ItemList = ({ category, sort, filters }) => {
 				const response = await fetch(
 					category
 						? `http://localhost:8000/api/product?category=${category}`
-						: 'http://localhost:8000/api/product'
+						: 'http://localhost:8000/api/product',
+					{
+						credentials: 'include',
+					}
 				);
 				const responseData = await response.json();
 				setProducts(await responseData.products);

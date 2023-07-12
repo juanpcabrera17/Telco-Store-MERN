@@ -33,10 +33,10 @@ app.use(
 				useNewUrlParser: true,
 				useUnifiedTopology: true,
 			},
-			ttl: 60,
+			/* ttl: 60,
 			cookie: {
 				maxAge: 600000,
-			},
+			}, */
 		}),
 		secret: 'secreto',
 		resave: false,
@@ -56,11 +56,12 @@ app.engine(
 	})
 );
 
-app.use(
+/* app.use(
 	cors({
 		origin: '*',
 	})
-);
+); */
+app.use(cors({ credentials: true, origin: 'http://127.0.0.1:5173' }));
 app.use(express.static('public', { index: false }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -72,4 +73,4 @@ app.use((req, res, next) => {
 	next();
 });
 
-module.exports = { app /* passport */, chatContainer, PORT };
+module.exports = { app, passport, chatContainer, PORT };
