@@ -3,8 +3,9 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { FaRegUser } from 'react-icons/fa6';
 import { IoCartOutline } from 'react-icons/io5';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserDropdown } from './UserDropdown';
+import { useCart } from '../context/CartContext';
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(' ');
@@ -12,9 +13,19 @@ function classNames(...classes) {
 
 export const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	let user = '';
 
-	/* 	useEffect(() => {
-	}, [user]); */
+	const navigate = useNavigate();
+	const { cartQuantity } = useCart();
+	const getUser = async () => {
+		user = await JSON.parse(sessionStorage.getItem('user'));
+		console.log(user);
+		if (!user) {
+			navigate('/login');
+		} else {
+			navigate(`/cart/${user._id}`);
+		}
+	};
 
 	return (
 		<Disclosure as="nav" className="bg-gray-800 z-10 sticky">
@@ -166,10 +177,18 @@ export const Navbar = () => {
 
 							<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 								<UserDropdown />
-
-								<Link to="/cart">
-									<IoCartOutline className="text-gray-300 hover:text-white text-3xl" />
-								</Link>
+								{/* { 	<Link to={getUser()  ; user ? `/cart/${user._id}` : '/login' }
+								> } */}
+								<IoCartOutline
+									onClick={() => getUser()}
+									className="text-gray-300 hover:text-white text-3xl"
+								/>
+								{cartQuantity() ? (
+									<div className="bg-red-600 text-white font-medium rounded-full absolute top-3 -right-2 text-xs w-5 h-5 flex items-center justify-center">
+										<span>{cartQuantity()}</span>
+									</div>
+								) : null}
+								{/* </Link> */}
 							</div>
 						</div>
 					</div>

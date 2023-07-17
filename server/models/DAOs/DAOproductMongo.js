@@ -42,9 +42,9 @@ class productContainer {
 		}
 	};
 
-	getById = async (Number) => {
+	getById = async (id) => {
 		try {
-			const products = await this.productMongoDB.find({ id: Number });
+			const products = await this.productMongoDB.find({ _id: id });
 			if (products.length > 0) {
 				return products;
 			}

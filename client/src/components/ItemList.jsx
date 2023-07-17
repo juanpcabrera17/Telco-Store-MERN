@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export const ItemList = ({ category, sort, filters }) => {
 	const [products, setProducts] = useState([]);
@@ -74,9 +75,12 @@ export const ItemList = ({ category, sort, filters }) => {
 										style={{ outline: 'none' }}
 									/>
 									<div className="absolute inset-0 flex items-center justify-center flex-col opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-										<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-2">
+										<Link
+											to={`/itemdetail/${product._id}`}
+											className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-2"
+										>
 											+ Item details
-										</button>
+										</Link>
 										<button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-2">
 											Add to cart
 										</button>

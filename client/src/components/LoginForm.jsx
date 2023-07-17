@@ -16,13 +16,24 @@ const postData = async (url = '', data = {}) => {
 
 export const LoginForm = () => {
 	const navigate = useNavigate();
-	/* const [user, setUser] = useState(null); */
 
-	/* useEffect(() => {
-		if (user) {
-			onUserChange(user);
+	const handleUser = async () => {
+		const userid = sessionStorage.getItem('userid');
+		if (userid) {
+			const response = await fetch(`http://localhost:8000/api/user/${userid}`, {
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			const user = await response.json();
+			sessionStorage.setItem('user', JSON.stringify(user.user[0]));
+			console.log(user);
+		} else {
+			sessionStorage.removeItem('user');
+			sessionStorage.removeItem('userid');
 		}
-	}, [user, onUserChange]); */
+	};
 
 	return (
 		<>
@@ -52,7 +63,7 @@ export const LoginForm = () => {
 										console.log('todo ok pa');
 										console.log(data.user._id);
 										sessionStorage.setItem('userid', data.user._id);
-
+										handleUser();
 										navigate('/shop');
 									}
 								}
@@ -122,13 +133,13 @@ export const LoginForm = () => {
 					</Formik>
 
 					<p className="mt-10 text-center text-sm text-gray-500">
-						Not a member?{' '}
-						<a
-							href="#"
-							className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+						Don't have an account?{' '}
+						<Link
+							to="/register"
+							className="font-medium text-indigo-600 hover:text-indigo-500"
 						>
-							Start a 14 day free trial
-						</a>
+							Sign up
+						</Link>
 					</p>
 				</div>
 			</div>

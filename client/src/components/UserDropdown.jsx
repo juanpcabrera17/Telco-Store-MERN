@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { FaRegUser } from 'react-icons/fa6';
@@ -9,38 +9,28 @@ function classNames(...classes) {
 }
 
 export const UserDropdown = () => {
-	const [userId, setUserId] = useState('');
-	const [userName, setUserName] = useState('');
-
+	const [user, setUser] = useState('');
 	const navigate = useNavigate();
+	let LoggedIn = '';
 
-	const handleUser = async () => {
-		const userid = sessionStorage.getItem('userid');
-		setUserId(userid);
-		if (userid) {
-			const response = await fetch(`http://localhost:8000/api/user/${userid}`, {
-				method: 'GET',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			sessionStorage.setItem('user', JSON.stringify(await response.json()));
-			setUserName(JSON.parse(sessionStorage.getItem('user')).user[0].firstName);
-			console.log(userName);
-		} else {
-			setUserId(null);
-			setUserName(null);
-			sessionStorage.removeItem('user');
+	const getUser = () => {
+		LoggedIn = JSON.parse(sessionStorage.getItem('user'));
+		setUser(LoggedIn);
+		console.log(user);
+		LoggedIn == null || undefined ? navigate('/login') : null;
+	};
+
+	useEffect(() => {
+		if (LoggedIn == null || undefined) {
 			navigate('/login');
 		}
-	};
+	}, [user]);
 
 	return (
 		<Menu as="div" className="relative text-left flex">
 			<Menu.Button>
 				<FaRegUser
-					onClick={() => handleUser()}
+					onClick={() => getUser()}
 					className="text-gray-300 hover:text-white text-2xl mr-4"
 				/>
 			</Menu.Button>
@@ -56,7 +46,7 @@ export const UserDropdown = () => {
 			>
 				<Menu.Items
 					className={
-						userId
+						user
 							? 'absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none top-8'
 							: 'hidden'
 					}
@@ -64,15 +54,14 @@ export const UserDropdown = () => {
 					<div className="py-1">
 						<Menu.Item>
 							{({ active }) => (
-								<Link
-									to={userId ? `/user/${userId}` : `/login`}
+								<span
 									className={classNames(
 										active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
 										'block px-4 py-2 text-sm'
 									)}
 								>
-									Hi {userId ? userName : 'XXXXX'}
-								</Link>
+									Hi {user ? user.firstName : 'XXXXX'}
+								</span>
 							)}
 						</Menu.Item>
 					</div>

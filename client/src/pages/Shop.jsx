@@ -6,9 +6,9 @@ import { Sort } from '../components/Sort';
 import { Filters } from '../components/Filters';
 
 export const Shop = () => {
+	const [sort, setSort] = useState('newest');
 	const { category } = useParams();
 
-	const [sort, setSort] = useState('newest');
 	const handleSortChange = (selectedOption) => {
 		setSort(selectedOption);
 	};

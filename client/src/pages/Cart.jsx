@@ -1,63 +1,100 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useCart } from '../context/CartContext';
 
 export const Cart = () => {
+	const [promoCode, setPromoCode] = useState('');
+	const [promoCodeError, setPromoCodeError] = useState(false);
+	const [cartTotalint, setCartTotalint] = useState(0);
+	const inputRef = useRef(null);
+
+	const { cart, cartTotal, cartQuantity, clear } = useCart();
+
+	useEffect(() => {
+		console.log(inputRef);
+		if (inputRef.current.value != '') {
+			if (promoCode === 'TELCOSTORE20') {
+				setCartTotalint(cartTotal() - cartTotal() * 0.2);
+				setPromoCodeError(false);
+			} else {
+				setPromoCodeError(true);
+			}
+		}
+		console.log(cartTotalint);
+	}, [promoCode]);
+
+	const applyDiscount = () => {
+		setPromoCode(inputRef.current.value);
+		console.log(promoCode);
+	};
+
 	return (
-		<body className="bg-gray-100">
+		<div className="bg-gray-100">
 			<div className="container mx-auto mt-10">
 				<div className="flex shadow-md my-10">
 					<div className="w-3/4 bg-white px-10 py-10">
 						<div className="flex justify-between border-b pb-8">
 							<h1 className="font-semibold text-2xl">Carrito</h1>
-							<h2 className="font-semibold text-2xl">{/* totalQuantity */} Items</h2>
-						</div>
-						<div className="flex mt-10 mb-5">
-							<h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
-								Detalles del producto
-							</h3>
-							<h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
-								Cantidad
-							</h3>
-							<h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
-								Precio
-							</h3>
-							<h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
-								Total
-							</h3>
+							<h2 className="font-semibold text-2xl">{cartQuantity()} Items</h2>
 						</div>
 
-						{/* each products */}
-						<div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
-							<div className="flex w-2/5">
-								{/* product  */}
-								<div className="w-40">
-									<img
-										className="h-40 object-contain"
-										src="{{this.thumbnail}}"
-										alt=""
-									/>
-								</div>
-								<div className="flex flex-col justify-around ml-12 flex-grow">
-									<span className="font-bold text-sm">{/* this.name */}</span>
-									<button
-										onClick="deleteProduct('{{../username}}', '{{this.id}}'); location.reload();"
-										href="#"
-										className="font-semibold hover:text-red-500 text-gray-500 text-xs"
-									>
-										Eliminar
-									</button>
-								</div>
+						{cart.length > 0 ? (
+							<div className="flex mt-10 mb-5">
+								<h3 className="font-semibold text-gray-600 text-xs uppercase w-2/5">
+									Detalles del producto
+								</h3>
+								<h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
+									Cantidad
+								</h3>
+								<h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
+									Precio
+								</h3>
+								<h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">
+									Total
+								</h3>
 							</div>
-							<span className="text-center w-1/5 font-semibold text-sm">
-								{/* this.quantity */}
-							</span>
-							<span className="text-center w-1/5 font-semibold text-sm">
-								$ {/* this.price */}
-							</span>
-							<span className="text-center w-1/5 font-semibold text-sm">
-								$ {/* this.total */}
-							</span>
-						</div>
-						{/* /each */}
+						) : (
+							<span>Your cart is empty</span>
+						)}
+
+						{cart.map((product) => (
+							<div
+								key={product._id}
+								className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5"
+							>
+								<div className="flex w-2/5">
+									{/* product  */}
+									<div className="w-40">
+										<img
+											className="h-40 object-contain"
+											src={product.thumbnail}
+											alt=""
+										/>
+									</div>
+									<div className="flex flex-col justify-around ml-12 flex-grow">
+										<span className="font-bold text-sm">{product.name}</span>
+										<button
+											onClick={() => {
+												deleteProduct('{{../username}}', '{{this.id}}');
+												location.reload();
+											}}
+											href="#"
+											className="font-semibold hover:text-red-500 text-gray-500 text-xs"
+										>
+											Eliminar
+										</button>
+									</div>
+								</div>
+								<span className="text-center w-1/5 font-semibold text-sm">
+									{product.quantity}
+								</span>
+								<span className="text-center w-1/5 font-semibold text-sm">
+									$ {product.price}
+								</span>
+								<span className="text-center w-1/5 font-semibold text-sm">
+									$ {product.price * product.quantity}
+								</span>
+							</div>
+						))}
 
 						<a
 							href="/api/productos"
@@ -77,35 +114,46 @@ export const Cart = () => {
 						<h1 className="font-semibold text-2xl border-b pb-8">Total de la orden</h1>
 						<div className="flex justify-between mt-10 mb-5">
 							<span className="font-semibold text-sm uppercase">
-								Items {/* totalQuantity */}
+								Items {cartQuantity()}
 							</span>
-							<span className="font-semibold text-sm">${/* totalCost */}</span>
+							<span className="font-semibold text-sm">${cartTotal()}</span>
 						</div>
-						<div>
-							<label className="font-medium inline-block mb-3 text-sm uppercase">
-								Envío
-							</label>
-							<select className="block p-2 text-gray-600 w-full text-sm">
-								<option>Envío a domicilio - gratis</option>
-							</select>
+						<label className="font-semibold inline-block mb-2 text-sm uppercase">
+							Shipping
+						</label>
+						<div className="flex items-center w-full justify-end font-semibold text-sm uppercase">
+							<input
+								type="radio"
+								id="free"
+								name="shipping"
+								value="free"
+								defaultChecked
+								className="mr-3 my-auto"
+							/>
+							<label htmlFor="free" /*  className="my-auto" */>Free $0</label>
 						</div>
 						<div className="py-10">
-							<label
-								for="promo"
-								className="font-semibold inline-block mb-3 text-sm uppercase"
-							>
-								Cupón de descuento
+							<label className="font-semibold inline-block mb-3 text-sm uppercase">
+								Promo code
 							</label>
 							<input
 								type="text"
-								id="promo"
-								placeholder="Ingrese el cupón"
-								className="p-2 text-sm w-full"
+								placeholder="code"
+								id="promoCode"
+								ref={inputRef}
+								className="p-2 text-sm w-full mb-2"
 							/>
+							{promoCodeError && <span className="text-red-500">Invalid code</span>}
+							{!promoCodeError && promoCode && (
+								<span className="text-green-500">Discount applied</span>
+							)}
+							<button
+								onClick={applyDiscount}
+								className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase"
+							>
+								Apply
+							</button>
 						</div>
-						<button className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">
-							Aplicar
-						</button>
 						<div className="border-t mt-8">
 							<div className="flex font-semibold justify-between py-6 text-sm uppercase">
 								<span>Precio total</span>
@@ -124,15 +172,10 @@ export const Cart = () => {
 									type="submit"
 									data-mdb-ripple="true"
 									data-mdb-ripple-color="light"
-									style="
-														background: linear-gradient(
-															to right,
-															#ee7724,
-															#d8363a,
-															#dd3675,
-															#b44593
-														);
-														"
+									style={{
+										background:
+											'linear-gradient(to right, #ee7724,#d8363a,#dd3675,#b44593)',
+									}}
 								>
 									Finalizar Compra
 								</button>
@@ -141,6 +184,6 @@ export const Cart = () => {
 					</div>
 				</div>
 			</div>
-		</body>
+		</div>
 	);
 };
