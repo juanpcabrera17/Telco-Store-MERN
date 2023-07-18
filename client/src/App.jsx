@@ -9,6 +9,7 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { User } from './pages/User';
 import { ItemDetail } from './pages/ItemDetail';
+import { Checkout } from './pages/Checkout';
 
 function App() {
 	return (
@@ -25,6 +26,7 @@ function App() {
 						<Route path="/user/:userid" element={<User />} />
 						<Route path="/login" element={<Login />} />
 						<Route path="/cart/:userid" element={<Cart />} />
+						<Route path="/checkout/:userid" element={<Checkout />} />
 
 						{/* <Route path="*" element={<NoMatch />} /> */}
 

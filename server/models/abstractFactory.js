@@ -4,6 +4,7 @@ const DAOproductsFile = require('./DAOs/DAOproductsFile');
 const DAOcartFile = require('./DAOs/DAOcartFile');
 const DAOchatMongo = require('./DAOs/DAOchatMongo');
 const DAOuserMongo = require('./DAOs/DAOuserMongo');
+const DAOorderMongo = require('./DAOs/DAOorderMongo');
 
 let DAO;
 let mode = process.argv[2];
@@ -14,6 +15,7 @@ if (mode == 'mongo') {
 		cart: new DAOcartMongo(),
 		chat: new DAOchatMongo(),
 		user: new DAOuserMongo.userContainer(),
+		order: new DAOorderMongo(),
 	};
 } else if (mode == 'file') {
 	DAO = {

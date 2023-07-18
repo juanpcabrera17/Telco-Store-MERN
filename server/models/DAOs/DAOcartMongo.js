@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const { loggerWarn, loggerError } = require('../../config/configWinston');
 
-const cartsSchema = new Schema(
+const cartSchema = new Schema(
 	{
 		userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 		products: [
@@ -18,7 +18,7 @@ const cartsSchema = new Schema(
 	{ timestamps: true }
 );
 
-const cartMongoDB = model('carts', cartsSchema);
+const cartMongoDB = model('carts', cartSchema);
 
 class cartContainer {
 	constructor() {

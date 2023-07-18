@@ -4,6 +4,7 @@ const io = require('socket.io')(httpServer);
 const routerUser = require('./router/routesUser');
 const routerProducts = require('./router/routesProducts');
 const routerCart = require('./router/routesCart');
+const routerOrder = require('./router/routesOrder');
 const { loggerWarn } = require('./config/configWinston');
 const generatedProducts = require('./config/configFaker');
 
@@ -14,6 +15,7 @@ httpServer.listen(PORT, () => {
 app.use('/api/user', routerUser);
 app.use('/api/product', routerProducts);
 app.use('/api/cart', routerCart);
+app.use('/api/order', routerOrder);
 app.get('*', (req, res) => {
 	loggerWarn.warn({ metodo: req.method, path: req.path });
 	res.status(404).send('error 404 not found');
