@@ -1,25 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ItemCount } from './ItemCount';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
+import { BiHeart, BiSolidHeart } from 'react-icons/bi';
 import { useCart } from '../context/CartContext';
+import { useUser } from '../context/UserContext';
 
 export const ItemDetailContainer = () => {
 	const [product, setProduct] = useState([]);
 	const [quantity, setQuantity] = useState(0);
+	const [isFavorite, setIsFavorite] = useState(false);
+	const { user, toggleFavorite } = useUser();
 	const { addItem } = useCart();
 	const { productId } = useParams();
+	const navigate = useNavigate();
+
+	/* const favorites = JSON.parse(sessionStorage.getItem('user')).favorites; */
 
 	const onAdd = () => {
 		let { _id, name, price, stock, thumbnail } = product;
 		let cartItem = { _id, name, price, stock, thumbnail, quantity: quantity };
-		console.log(cartItem);
 		addItem(cartItem);
 	};
 
-	console.log(productId);
+	useEffect(() => {
+		if (JSON.stringify(user) == '{}') {
+			return;
+		}
+		if (user.favorites.includes(productId)) {
+			setIsFavorite(true);
+		} else {
+			setIsFavorite(false);
+		}
+	}, [user]);
 
 	useEffect(() => {
+		setQuantity(1);
+
 		const fetchData = async () => {
 			try {
 				const response = await fetch(`http://localhost:8000/api/product/${productId}`, {
@@ -27,7 +44,6 @@ export const ItemDetailContainer = () => {
 				});
 				const responseData = await response.json();
 				setProduct(await responseData.product[0]);
-				console.log(product);
 			} catch (error) {
 				console.error('Error:', error);
 			}
@@ -167,22 +183,33 @@ export const ItemDetailContainer = () => {
 							/>
 							<button
 								onClick={onAdd}
-								className=" flex items-center justify-center w-2/5 outline outline-2 outline-black border-0 py-2 px-6 transition duration-300 hover:bg-black hover:text-white rounded"
+								className=" flex items-center justify-center w-2/5 outline outline-2 outline-black border-0 px-6 transition duration-300 hover:bg-black hover:text-white rounded"
 							>
 								<HiOutlineShoppingBag className="mr-3 text-xl" /> Add to cart
 							</button>
-							<button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-								<svg
-									fill="currentColor"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
-									className="w-5 h-5"
-									viewBox="0 0 24 24"
+							{isFavorite ? (
+								<button
+									onClick={() => {
+										JSON.stringify(user) == '{}'
+											? navigate('/login')
+											: toggleFavorite(productId);
+									}}
+									className="flex items-center justify-center outline outline-2 outline-black border-0 px-4 transition duration-300 hover:bg-black hover:text-white rounded"
 								>
-									<path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-								</svg>
-							</button>
+									<BiSolidHeart className="text-xl" />
+								</button>
+							) : (
+								<button
+									onClick={() => {
+										JSON.stringify(user) == '{}'
+											? navigate('/login')
+											: toggleFavorite(productId);
+									}}
+									className="flex items-center justify-center outline outline-2 outline-black border-0 px-4 transition duration-300 hover:bg-black hover:text-white rounded"
+								>
+									<BiHeart className="text-xl" />
+								</button>
+							)}
 						</div>
 						<div className="p-5 flex justify-center">
 							<button className="m-auto w-4/5 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">

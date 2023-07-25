@@ -15,9 +15,10 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiLock } from 'react-icons/fi';
+import { useUser } from '../context/UserContext';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { FiLock } from 'react-icons/fi';
 
 const getCharacterValidationError = (string) => {
 	return `Your password must have at least 1 ${string} character`;
@@ -44,20 +45,9 @@ const signupSchema = Yup.object().shape({
 	zipCode: Yup.string().min(4, 'Too Short!').max(7, 'Too Long!').required('Required'),
 });
 
-const postData = async (url = '', data = {}) => {
-	const response = await fetch(url, {
-		method: 'POST',
-		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	});
-	return response.json();
-};
-
 export const RegisterForm = () => {
 	const navigate = useNavigate();
+	const { registerUser } = useUser();
 
 	return (
 		<div className=" my-20 px-20 py-10 bg-white rounded-2xl w-2/4 drop-shadow-xl">
@@ -79,14 +69,8 @@ export const RegisterForm = () => {
 				validationSchema={signupSchema}
 				onSubmit={(values) => {
 					console.log('values: ' + JSON.stringify(values));
-					postData('http://localhost:8000/api/user/register', values).then((data) => {
-						if (!data.error) {
-							console.log('todo ok pa');
-							console.log(data);
-							navigate('/shop');
-						}
-						console.log(data);
-					});
+					registerUser(values);
+					navigate('/shop');
 				}}
 			>
 				{({ errors, touched }) => (

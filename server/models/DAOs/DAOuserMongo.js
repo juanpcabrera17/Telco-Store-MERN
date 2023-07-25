@@ -14,6 +14,7 @@ const userSchema = new Schema(
 		region: { type: String, required: true, max: 100 },
 		zipCode: { type: String, required: true, max: 100 },
 		isSubscribed: { type: Boolean },
+		favorites: [{ productid: { type: Schema.Types.ObjectId, ref: 'Product' } }],
 	},
 	{ timestamps: true }
 );

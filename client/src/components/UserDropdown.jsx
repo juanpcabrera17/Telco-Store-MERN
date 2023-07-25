@@ -3,34 +3,21 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { FaRegUser } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(' ');
 }
 
 export const UserDropdown = () => {
-	const [user, setUser] = useState('');
+	const { user } = useUser();
 	const navigate = useNavigate();
-	let LoggedIn = '';
-
-	const getUser = () => {
-		LoggedIn = JSON.parse(sessionStorage.getItem('user'));
-		setUser(LoggedIn);
-		console.log(user);
-		LoggedIn == null || undefined ? navigate('/login') : null;
-	};
-
-	useEffect(() => {
-		if (LoggedIn == null || undefined) {
-			navigate('/login');
-		}
-	}, [user]);
 
 	return (
 		<Menu as="div" className="relative text-left flex">
 			<Menu.Button>
 				<FaRegUser
-					onClick={() => getUser()}
+					onClick={() => (JSON.stringify(user) == '{}' ? navigate('/login') : null)}
 					className="text-gray-300 hover:text-white text-2xl mr-4"
 				/>
 			</Menu.Button>
@@ -46,9 +33,9 @@ export const UserDropdown = () => {
 			>
 				<Menu.Items
 					className={
-						user
-							? 'absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none top-8'
-							: 'hidden'
+						JSON.stringify(user) == '{}'
+							? 'hidden'
+							: 'absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none top-8'
 					}
 				>
 					<div className="py-1">
@@ -60,7 +47,7 @@ export const UserDropdown = () => {
 										'block px-4 py-2 text-sm'
 									)}
 								>
-									Hi {user ? user.firstName : 'XXXXX'}
+									Hi {user.firstName}
 								</span>
 							)}
 						</Menu.Item>

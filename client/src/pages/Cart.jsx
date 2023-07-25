@@ -5,19 +5,14 @@ import { useCart } from '../context/CartContext';
 
 export const Cart = () => {
 	const [promoCode, setPromoCode] = useState('');
-	const [promoCodeError, setPromoCodeError] = useState(false);
+	const [promoCodeError, setPromoCodeError] = useState();
 	const [total, setTotal] = useState(0);
 	const inputRef = useRef(null);
 	const { userid } = useParams();
 	const { cart, cartTotal, cartQuantity, clear } = useCart();
 
 	useEffect(() => {
-		const calculateTotal = async () => {
-			const calculatedTotal = await cartTotal();
-			setTotal(calculatedTotal);
-		};
-		calculateTotal();
-
+		setTotal(cartTotal());
 		if (inputRef.current.value != '') {
 			if (promoCode === 'TELCOSTORE20') {
 				setTotal(cartTotal() - cartTotal() * 0.2);
@@ -30,7 +25,6 @@ export const Cart = () => {
 
 	const applyDiscount = () => {
 		setPromoCode(inputRef.current.value);
-		console.log(promoCode);
 	};
 
 	const handleGoToCheckout = () => {
@@ -130,20 +124,7 @@ export const Cart = () => {
 							</span>
 							<span className="font-semibold text-sm">${cartTotal()}</span>
 						</div>
-						<label className="font-semibold inline-block mb-2 text-sm uppercase">
-							Shipping
-						</label>
-						<div className="flex items-center w-full justify-end font-semibold text-sm uppercase">
-							<input
-								type="radio"
-								id="free"
-								name="shipping"
-								value="free"
-								defaultChecked
-								className="mr-3 my-auto"
-							/>
-							<label htmlFor="free" /*  className="my-auto" */>Free $0</label>
-						</div>
+
 						<div className="py-10">
 							<label className="font-semibold inline-block mb-3 text-sm uppercase">
 								Promo code
@@ -161,7 +142,8 @@ export const Cart = () => {
 							)}
 							<button
 								onClick={applyDiscount}
-								className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase"
+								className="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase disabled:bg-gray-300"
+								disabled={!promoCodeError && promoCode}
 							>
 								Apply
 							</button>
@@ -169,30 +151,31 @@ export const Cart = () => {
 						<div className="border-t mt-8">
 							<div className="flex font-semibold justify-between py-6 text-sm uppercase">
 								<span>Total price</span>
-								<span>${/* totalCost */} </span>
+								<span>
+									{!promoCodeError && promoCode ? (
+										<div>
+											<span className="line-through">${cartTotal()}</span>
+											<span>${total}</span>
+										</div>
+									) : (
+										'$' + cartTotal()
+									)}
+								</span>
 							</div>
-							<form action="/api/carrito" method="post">
-								{/* #each products */}
-								<input type="hidden" name="name" value="{{this.name}}" />
-								<input type="hidden" name="price" value="{{this.price}}" />
-								<input type="hidden" name="quantity" value="{{this.quantity}}" />
-								<input type="hidden" name="total" value="{{this.total}}" />
-								{/* /each */}
-								<input type="hidden" name="totalCost" value="{{totalCost}}" />
-								<Link
-									to={`/checkout/${userid}`}
-									className="inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
-									data-mdb-ripple="true"
-									data-mdb-ripple-color="light"
-									style={{
-										background:
-											'linear-gradient(to right, #ee7724,#d8363a,#dd3675,#b44593)',
-									}}
-									onClick={handleGoToCheckout}
-								>
-									Go to checkout
-								</Link>
-							</form>
+
+							<Link
+								to={`/checkout/${userid}`}
+								className=" text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
+								data-mdb-ripple="true"
+								data-mdb-ripple-color="light"
+								style={{
+									background:
+										'linear-gradient(to right, #ee7724,#d8363a,#dd3675,#b44593)',
+								}}
+								onClick={handleGoToCheckout}
+							>
+								Go to checkout
+							</Link>
 						</div>
 					</div>
 				</div>

@@ -1,8 +1,14 @@
 const { saveOrder } = require('../service/serviceOrder');
+const { updateProductById } = require('../service/serviceProducts');
 
 const controllerPostOrder = async (req, res) => {
 	const newOrder = await saveOrder(req.body);
 	if (newOrder) {
+		req.body.checkout.cart.map(async (product) => {
+			await updateProductById(product._id, {
+				stock: product.stock - product.quantity,
+			});
+		});
 		res.status(201).json(newOrder);
 	} else {
 		res.json({ error: true });

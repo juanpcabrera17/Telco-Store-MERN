@@ -1,39 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
-
-const postData = async (url = '', data = {}) => {
-	const response = await fetch(url, {
-		method: 'POST',
-		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	});
-	return response.json();
-};
+import { useUser } from '../context/UserContext';
 
 export const LoginForm = () => {
+	const { loginUser } = useUser();
 	const navigate = useNavigate();
-
-	const handleUser = async () => {
-		const userid = sessionStorage.getItem('userid');
-		if (userid) {
-			const response = await fetch(`http://localhost:8000/api/user/${userid}`, {
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			const user = await response.json();
-			sessionStorage.setItem('user', JSON.stringify(user.user[0]));
-			console.log(user);
-		} else {
-			sessionStorage.removeItem('user');
-			sessionStorage.removeItem('userid');
-		}
-	};
 
 	return (
 		<>
@@ -57,17 +29,8 @@ export const LoginForm = () => {
 						}}
 						onSubmit={(values) => {
 							console.log('values: ' + JSON.stringify(values));
-							postData('http://localhost:8000/api/user/login', values).then(
-								(data) => {
-									if (!data.error) {
-										console.log('todo ok pa');
-										console.log(data.user._id);
-										sessionStorage.setItem('userid', data.user._id);
-										handleUser();
-										navigate('/shop');
-									}
-								}
-							);
+							loginUser(values);
+							navigate('/shop');
 						}}
 					>
 						{({ errors, touched, isValidating }) => (

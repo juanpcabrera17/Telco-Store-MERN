@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { Formik, Form, Field } from 'formik';
-
 import * as Yup from 'yup';
+import { FiLock } from 'react-icons/fi';
 
 const postData = async (url = '', data = {}) => {
 	const response = await fetch(url, {
@@ -57,7 +57,6 @@ export const Checkout = () => {
 			shippingCharge: shippingCharge,
 		});
 	}, []);
-	console.log(shippingData);
 
 	const handleOrder = () => {
 		let order = {
@@ -65,13 +64,9 @@ export const Checkout = () => {
 			checkout: checkout,
 			shippingData: { ...shippingData, method: shippingMethod },
 		};
-		console.log(order);
 
 		postData('http://localhost:8000/api/order', order).then((data) => {
 			if (!data.error) {
-				console.log('todo ok pa');
-				localStorage.clear();
-				navigate('/thankyou');
 			}
 		});
 	};
@@ -252,7 +247,7 @@ export const Checkout = () => {
 						</div>
 					</form>
 				</div>
-				<div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
+				<div className="mt-10 bg-gray-50 px-9 pt-8 lg:mt-0">
 					<p className="text-xl font-medium">Payment Details</p>
 					<p className="text-gray-400">
 						Complete your order by providing your shipping and payment details.
@@ -265,20 +260,30 @@ export const Checkout = () => {
 							Your data
 						</label>
 						{toggleShipping ? (
-							<div className="flex flex-col w-full rounded-md border border-gray-200 px-4 py-3 pl-8 text-sm shadow-sm outline-none">
-								<span>
-									Name: {shippingData.firstName} {shippingData.lastName}
-								</span>
-								<span>
-									Shipping address: {shippingData.streetAddress},{' '}
-									{shippingData.region}, {shippingData.country}
-								</span>
-								<button
-									onClick={() => setToggleShipping(false)}
-									className="text-red-500"
-								>
-									x
-								</button>
+							<div className="flex flex-col w-full rounded-lg border-2 border-gray-700 bg-gray-50 px-4 py-3 pl-8 text-sm shadow-sm outline-none">
+								<p className="mt-2 font-semibold">
+									Name:{' '}
+									<span className="text-slate-500 font-medium">
+										{shippingData.firstName} {shippingData.lastName}
+									</span>
+								</p>
+
+								<p className="mt-2 font-semibold">
+									Shipping address:{' '}
+									<span className="text-slate-500 font-medium">
+										{shippingData.streetAddress}, {shippingData.city},{' '}
+										{shippingData.region}, {shippingData.zipCode},{' '}
+										{shippingData.country}
+									</span>
+								</p>
+								<div className="flex justify-center items-center">
+									<button
+										onClick={() => setToggleShipping(false)}
+										className="text-red-500 hover:text-white border border-red-700 hover:bg-red-700 font-medium rounded-md px-5 py-2 text-center mt-4 w-2/5 "
+									>
+										change data
+									</button>
+								</div>
 							</div>
 						) : (
 							/* <div className="flex flex-col w-full rounded-md border border-gray-200 px-4 py-3 pl-8 text-sm shadow-sm outline-none"> */
@@ -611,11 +616,11 @@ export const Checkout = () => {
 						</div>
 						{/* <!-- Total --> */}
 						<div className="mt-6 border-t border-b py-2">
-							<div className="flex items-center justify-between">
+							<div className="flex items-center justify-between py-1">
 								<p className="text-sm font-medium text-gray-900">Subtotal</p>
 								<p className="font-semibold text-gray-900">${checkout.total}</p>
 							</div>
-							<div className="flex items-center justify-between">
+							<div className="flex items-center justify-between py-1">
 								<p className="text-sm font-medium text-gray-900">Shipping</p>
 								<p className="font-semibold text-gray-900">
 									{shippingCharge ? '$' + shippingCharge : 'FREE'}
@@ -629,12 +634,15 @@ export const Checkout = () => {
 							</p>
 						</div>
 					</div>
-					<button
-						onClick={handleOrder}
-						className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
-					>
-						Place Order
-					</button>
+					<div className=" flex items-center justify-center ">
+						<button
+							onClick={handleOrder}
+							className="flex items-center justify-center mt-6 mb-8 w-full rounded-md bg-indigo-600 hover:bg-indigo-500 px-6 py-3 font-semibold text-white"
+						>
+							<FiLock className="mr-3" />
+							Place Order
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

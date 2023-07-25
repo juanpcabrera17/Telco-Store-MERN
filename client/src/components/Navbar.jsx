@@ -5,6 +5,7 @@ import { FaRegUser } from 'react-icons/fa6';
 import { IoCartOutline } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserDropdown } from './UserDropdown';
+import { useUser } from '../context/UserContext';
 import { useCart } from '../context/CartContext';
 
 function classNames(...classes) {
@@ -13,19 +14,9 @@ function classNames(...classes) {
 
 export const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	let user = '';
+	const { user } = useUser();
 
-	const navigate = useNavigate();
 	const { cartQuantity } = useCart();
-	const getUser = async () => {
-		user = await JSON.parse(sessionStorage.getItem('user'));
-		console.log(user);
-		if (!user) {
-			navigate('/login');
-		} else {
-			navigate(`/cart/${user._id}`);
-		}
-	};
 
 	return (
 		<Disclosure as="nav" className="bg-gray-800 z-20 sticky">
@@ -61,11 +52,14 @@ export const Navbar = () => {
 								</Link>
 								<ul className="hidden justify-center items-center w-full sm:flex">
 									{/* Shop dropdown */}
-									<Menu as="li" className="relative">
+									<Menu
+										as="li"
+										className="relative"
+										onMouseEnter={() => setIsMenuOpen(true)}
+										onMouseLeave={() => setIsMenuOpen(false)}
+									>
 										<Link
 											to="/shop"
-											onMouseEnter={() => setIsMenuOpen(true)}
-											onClick={() => setIsMenuOpen(true)}
 											className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 font-medium "
 										>
 											Shop
@@ -81,10 +75,7 @@ export const Navbar = () => {
 											leaveFrom="transform opacity-100 scale-100"
 											leaveTo="transform opacity-0 scale-95"
 										>
-											<Menu.Items
-												className="absolute right-0 z-10 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-												onMouseLeave={() => setIsMenuOpen(false)}
-											>
+											<Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 												<div className="py-1">
 													<Menu.Item>
 														{({ active }) => (
@@ -177,18 +168,20 @@ export const Navbar = () => {
 
 							<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 								<UserDropdown />
-								{/* { 	<Link to={getUser()  ; user ? `/cart/${user._id}` : '/login' }
-								> } */}
-								<IoCartOutline
-									onClick={() => getUser()}
-									className="text-gray-300 hover:text-white text-3xl"
-								/>
-								{cartQuantity() ? (
-									<div className="bg-red-600 text-white font-medium rounded-full absolute top-3 -right-2 text-xs w-5 h-5 flex items-center justify-center">
-										<span>{cartQuantity()}</span>
-									</div>
-								) : null}
-								{/* </Link> */}
+								<Link
+									to={
+										JSON.stringify(user) == '{}'
+											? '/login'
+											: `/cart/${user._id}`
+									}
+								>
+									<IoCartOutline className="text-gray-300 hover:text-white text-3xl" />
+									{cartQuantity() ? (
+										<div className="bg-red-600 text-white font-medium rounded-full absolute top-3 -right-2 text-xs w-5 h-5 flex items-center justify-center">
+											<span>{cartQuantity()}</span>
+										</div>
+									) : null}
+								</Link>
 							</div>
 						</div>
 					</div>
