@@ -11,6 +11,7 @@ const orderSchema = new Schema(
 					name: { type: String, required: true },
 					price: { type: Number, required: true },
 					thumbnail: { type: String, required: true },
+					category: { type: String, required: true },
 					quantity: { type: Number, required: true },
 					stock: { type: Number, required: true },
 				},
@@ -41,6 +42,7 @@ const orderSchema = new Schema(
 			zipCode: { type: String, required: true, max: 100 },
 			shippingCharge: { type: Number, required: true },
 		},
+		status: { type: String, required: true, max: 100 },
 	},
 	{ timestamps: true }
 );
@@ -57,6 +59,19 @@ class orderContainer {
 		orderContainer._instance = this;
 		this.orderMongoDB = orderMongoDB;
 	}
+
+	getByUserId = async (id) => {
+		try {
+			const orders = await this.orderMongoDB.find({ 'user._id': id }); /* (err, orders)=>{ */
+			if (orders.length > 0) {
+				return orders;
+			}
+
+			//const order = await this.orderMongoDB.findById(id);
+		} catch (err) {
+			loggerError.error(`error: ${err}`);
+		}
+	};
 
 	save = async (Object) => {
 		try {

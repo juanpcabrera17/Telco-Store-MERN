@@ -63,6 +63,7 @@ export const Checkout = () => {
 			user: user,
 			checkout: checkout,
 			shippingData: { ...shippingData, method: shippingMethod },
+			status: 'Pending',
 		};
 
 		postData('http://localhost:8000/api/order', order).then((data) => {

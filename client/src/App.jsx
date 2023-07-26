@@ -8,9 +8,10 @@ import { Cart } from './pages/Cart';
 import { Shop } from './pages/Shop';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
-import { User } from './pages/User';
 import { ItemDetail } from './pages/ItemDetail';
 import { Checkout } from './pages/Checkout';
+import { Profile } from './pages/Profile';
+import { Orders } from './pages/Orders';
 
 function App() {
 	return (
@@ -25,10 +26,11 @@ function App() {
 							<Route path="/shop" element={<Shop />} />
 							<Route path="/itemdetail/:productId" element={<ItemDetail />} />
 							<Route path="/register" element={<Register />} />
-							<Route path="/user/:userid" element={<User />} />
 							<Route path="/login" element={<Login />} />
 							<Route path="/cart/:userid" element={<Cart />} />
 							<Route path="/checkout/:userid" element={<Checkout />} />
+							<Route path="/profile/:userid" element={<Profile />} />
+							<Route path="/orders/:userid" element={<Orders />} />
 
 							{/* <Route path="*" element={<NoMatch />} /> */}
 

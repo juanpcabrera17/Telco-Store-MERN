@@ -18,8 +18,8 @@ export const ItemDetailContainer = () => {
 	/* const favorites = JSON.parse(sessionStorage.getItem('user')).favorites; */
 
 	const onAdd = () => {
-		let { _id, name, price, stock, thumbnail } = product;
-		let cartItem = { _id, name, price, stock, thumbnail, quantity: quantity };
+		let { _id, name, price, stock, thumbnail, category } = product;
+		let cartItem = { _id, name, price, stock, thumbnail, category, quantity: quantity };
 		addItem(cartItem);
 	};
 

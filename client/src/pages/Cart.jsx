@@ -9,7 +9,7 @@ export const Cart = () => {
 	const [total, setTotal] = useState(0);
 	const inputRef = useRef(null);
 	const { userid } = useParams();
-	const { cart, cartTotal, cartQuantity, clear } = useCart();
+	const { cart, cartTotal, cartQuantity, removeItem, clear } = useCart();
 
 	useEffect(() => {
 		setTotal(cartTotal());
@@ -64,7 +64,8 @@ export const Cart = () => {
 						)}
 
 						{cart.map((product) => (
-							<div
+							<Link
+								to={`/itemdetail/${product._id}`}
 								key={product._id}
 								className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5"
 							>
@@ -79,12 +80,12 @@ export const Cart = () => {
 									<div className="flex flex-col justify-around ml-12 flex-grow">
 										<span className="font-bold text-sm">{product.name}</span>
 										<button
-											onClick={() => {
-												deleteProduct('{{../username}}', '{{this.id}}');
-												location.reload();
+											onClick={(e) => {
+												removeItem(product._id);
+												e.preventDefault();
 											}}
 											href="#"
-											className="font-semibold hover:text-red-500 text-gray-500 text-xs"
+											className="font-semibold hover:text-red-500 text-gray-500 text-xs z-10"
 										>
 											Remove
 										</button>
@@ -99,7 +100,7 @@ export const Cart = () => {
 								<span className="text-center w-1/5 font-semibold text-sm">
 									$ {product.price * product.quantity}
 								</span>
-							</div>
+							</Link>
 						))}
 
 						<Link
@@ -165,7 +166,9 @@ export const Cart = () => {
 
 							<Link
 								to={`/checkout/${userid}`}
-								className=" text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
+								className={`text-center inline-block px-6 py-2.5 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3 ${
+									cartQuantity() > 0 ? '' : 'pointer-events-none grayscale'
+								} `}
 								data-mdb-ripple="true"
 								data-mdb-ripple-color="light"
 								style={{

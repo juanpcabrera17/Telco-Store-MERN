@@ -1,6 +1,8 @@
 const { Router } = require('express');
-const { controllerPostOrder } = require('../controller/controllerOrder');
+const { controllerGetOrder, controllerPostOrder } = require('../controller/controllerOrder');
 const routerOrder = new Router();
+
+routerOrder.get('/:userId', controllerGetOrder);
 
 routerOrder.post('/', controllerPostOrder);
 
