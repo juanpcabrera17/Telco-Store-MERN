@@ -68,7 +68,8 @@ export const UserDropdown = () => {
 						</Menu.Item>
 						<Menu.Item>
 							{({ active }) => (
-								<a
+								<Link
+									to={`/favorites/${user._id}`}
 									href="#"
 									className={classNames(
 										active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
@@ -76,7 +77,7 @@ export const UserDropdown = () => {
 									)}
 								>
 									Favorites
-								</a>
+								</Link>
 							)}
 						</Menu.Item>
 					</div>

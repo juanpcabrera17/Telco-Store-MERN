@@ -14,7 +14,16 @@ const userSchema = new Schema(
 		region: { type: String, required: true, max: 100 },
 		zipCode: { type: String, required: true, max: 100 },
 		isSubscribed: { type: Boolean },
-		favorites: [{ productid: { type: Schema.Types.ObjectId, ref: 'Product' } }],
+		favorites: [
+			{
+				_id: { type: Schema.Types.ObjectId, ref: 'Product' },
+				name: { type: String, required: true },
+				price: { type: Number, required: true },
+				stock: { type: Number, required: true },
+				thumbnail: { type: String, required: true },
+				category: { type: String, required: true },
+			},
+		],
 	},
 	{ timestamps: true }
 );
@@ -51,13 +60,11 @@ class userContainer {
 		}
 	};
 
-	update = async (ProductId, Object) => {
+	update = async (UserId, Object) => {
 		try {
-			const updatedUser = await this.userMongoDB.findOneAndUpdate(
-				{ _id: ProductId },
-				Object,
-				{ new: true }
-			);
+			const updatedUser = await this.userMongoDB.findOneAndUpdate({ _id: UserId }, Object, {
+				new: true,
+			});
 			return updatedUser;
 		} catch (err) {
 			console.log(`error: ${err}`);

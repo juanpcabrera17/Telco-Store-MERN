@@ -12,6 +12,7 @@ import { ItemDetail } from './pages/ItemDetail';
 import { Checkout } from './pages/Checkout';
 import { Profile } from './pages/Profile';
 import { Orders } from './pages/Orders';
+import { Favorites } from './pages/Favorites';
 
 function App() {
 	return (
@@ -31,6 +32,7 @@ function App() {
 							<Route path="/checkout/:userid" element={<Checkout />} />
 							<Route path="/profile/:userid" element={<Profile />} />
 							<Route path="/orders/:userid" element={<Orders />} />
+							<Route path="/favorites/:userid" element={<Favorites />} />
 
 							{/* <Route path="*" element={<NoMatch />} /> */}
 

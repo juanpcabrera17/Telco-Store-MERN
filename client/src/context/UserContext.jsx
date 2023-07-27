@@ -12,6 +12,18 @@ const postData = async (url = '', data = {}) => {
 	return response.json();
 };
 
+const putData = async (url = '', data = {}) => {
+	const response = await fetch(url, {
+		method: 'PUT',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	});
+	return response.json();
+};
+
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -54,11 +66,20 @@ export const UserProvider = ({ children }) => {
 		});
 	};
 
-	const toggleFavorite = (productId) => {
-		if (user.favorites.includes(productId)) {
-			setUser({ ...user, favorites: user.favorites.filter((id) => id !== productId) });
+	const toggleFavorite = (productId, product) => {
+		if (user.favorites.some((item) => item._id === productId)) {
+			setUser({
+				...user,
+				favorites: user.favorites.filter((product) => product._id !== productId),
+			});
+			putData(`http://localhost:8000/api/user/${user._id}`, {
+				favorites: user.favorites.filter((product) => product._id !== productId),
+			});
 		} else {
-			setUser({ ...user, favorites: [...user.favorites, productId] });
+			setUser({ ...user, favorites: [...user.favorites, product] });
+			putData(`http://localhost:8000/api/user/${user._id}`, {
+				favorites: [...user.favorites, product],
+			});
 		}
 	};
 

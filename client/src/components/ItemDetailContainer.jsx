@@ -27,7 +27,7 @@ export const ItemDetailContainer = () => {
 		if (JSON.stringify(user) == '{}') {
 			return;
 		}
-		if (user.favorites.includes(productId)) {
+		if (user.favorites.some((item) => item._id === productId)) {
 			setIsFavorite(true);
 		} else {
 			setIsFavorite(false);
@@ -192,7 +192,7 @@ export const ItemDetailContainer = () => {
 									onClick={() => {
 										JSON.stringify(user) == '{}'
 											? navigate('/login')
-											: toggleFavorite(productId);
+											: toggleFavorite(productId, product);
 									}}
 									className="flex items-center justify-center outline outline-2 outline-black border-0 px-4 transition duration-300 hover:bg-black hover:text-white rounded"
 								>
@@ -203,7 +203,7 @@ export const ItemDetailContainer = () => {
 									onClick={() => {
 										JSON.stringify(user) == '{}'
 											? navigate('/login')
-											: toggleFavorite(productId);
+											: toggleFavorite(productId, product);
 									}}
 									className="flex items-center justify-center outline outline-2 outline-black border-0 px-4 transition duration-300 hover:bg-black hover:text-white rounded"
 								>

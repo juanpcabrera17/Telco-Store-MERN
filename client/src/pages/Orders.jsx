@@ -36,7 +36,7 @@ export const Orders = () => {
 	return (
 		<div className="flex items-center flex-col ">
 			<div className="w-3/4 py-12 ml-5">
-				<h2 className="font-bold text-2xl my-2">Order Details</h2>
+				<h2 className="font-bold text-2xl my-2">Orders Detail</h2>
 				<p className="text-gray-500">
 					Check the status of recent and old orders & discover more products
 				</p>
