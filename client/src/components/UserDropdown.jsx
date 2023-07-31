@@ -10,7 +10,7 @@ function classNames(...classes) {
 }
 
 export const UserDropdown = () => {
-	const { user } = useUser();
+	const { user, logoutUser } = useUser();
 	const navigate = useNavigate();
 
 	return (
@@ -97,15 +97,17 @@ export const UserDropdown = () => {
 						</Menu.Item>
 						<Menu.Item>
 							{({ active }) => (
-								<a
-									href="#"
+								<button
+									onClick={() => {
+										logoutUser(), navigate('/shop');
+									}}
 									className={classNames(
 										active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
 										'block px-4 py-2 text-sm'
 									)}
 								>
 									Log out
-								</a>
+								</button>
 							)}
 						</Menu.Item>
 					</div>

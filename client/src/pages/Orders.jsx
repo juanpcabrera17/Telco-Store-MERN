@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useUser } from '../context/UserContext';
 import { Link, useParams } from 'react-router-dom';
 import { AiOutlineClockCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 
@@ -15,13 +16,17 @@ const getDate = (date) => {
 
 export const Orders = () => {
 	const [orders, setOrders] = useState([]);
+	const { user, fetchJWT } = useUser();
 	const { userid } = useParams();
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await fetch(`http://localhost:8000/api/order/${userid}`, {
+				const response = await fetchJWT(`http://localhost:8000/api/order/${userid}`, {
 					credentials: 'include',
+					headers: {
+						token: `Bearer ${user.accessToken ? user.accessToken : null}`,
+					},
 				});
 				const responseData = await response.json();
 				setOrders(await responseData.orders);
@@ -55,7 +60,7 @@ export const Orders = () => {
 							<div className="pb-5">
 								<p className="text-gray-500"> Total Amount </p>
 								<p className="font-medium">
-									{order.checkout.total + order.shippingData.shippingCharge}
+									${order.checkout.total + order.shippingData.shippingCharge}
 								</p>
 							</div>
 							<div className="pb-5">

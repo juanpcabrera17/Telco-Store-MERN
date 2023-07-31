@@ -167,6 +167,14 @@ export const Navbar = () => {
 							</div>
 
 							<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+								{user.isAdmin ? (
+									<Link
+										to="/admin"
+										className="rounded-md px-3 py-1.5 mr-4 font-medium border-2 text-gray-300  border-green-700 hover:bg-green-700  dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 "
+									>
+										Admin
+									</Link>
+								) : null}
 								<UserDropdown />
 								<Link
 									to={

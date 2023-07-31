@@ -6,7 +6,7 @@ const controllerGetOrder = async (req, res) => {
 	if (orders) {
 		res.status(200).json({ orders });
 	} else {
-		res.status(404).json({ error: true });
+		res.status(200).json({ error: 'you have no orders' });
 	}
 };
 

@@ -68,7 +68,6 @@ export const RegisterForm = () => {
 				}}
 				validationSchema={signupSchema}
 				onSubmit={(values) => {
-					console.log('values: ' + JSON.stringify(values));
 					registerUser(values);
 					navigate('/shop');
 				}}

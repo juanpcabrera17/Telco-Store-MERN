@@ -13,7 +13,7 @@ const userSchema = new Schema(
 		city: { type: String, required: true, max: 100 },
 		region: { type: String, required: true, max: 100 },
 		zipCode: { type: String, required: true, max: 100 },
-		isSubscribed: { type: Boolean },
+		isSubscribed: { type: Boolean, default: false },
 		favorites: [
 			{
 				_id: { type: Schema.Types.ObjectId, ref: 'Product' },
@@ -24,6 +24,7 @@ const userSchema = new Schema(
 				category: { type: String, required: true },
 			},
 		],
+		isAdmin: { type: Boolean, default: false },
 	},
 	{ timestamps: true }
 );

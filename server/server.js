@@ -14,7 +14,7 @@ httpServer.listen(PORT, () => {
 
 app.use('/api/user', routerUser);
 app.use('/api/product', routerProducts);
-app.use('/api/cart', routerCart);
+app.use('/api/cart', routerCart); //obsolete, useCart() instead
 app.use('/api/order', routerOrder);
 app.get('*', (req, res) => {
 	loggerWarn.warn({ metodo: req.method, path: req.path });

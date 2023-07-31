@@ -1,56 +1,103 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-
-const postData = async (url = '', data = {}) => {
-	const response = await fetch(url, {
-		method: 'POST',
-		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	});
-	return response.json();
-};
-
-const putData = async (url = '', data = {}) => {
-	const response = await fetch(url, {
-		method: 'PUT',
-		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	});
-	return response.json();
-};
+import jwt_decode from 'jwt-decode';
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState({});
 
-	useEffect(() => {
+	const postData = async (url = '', data = {}) => {
+		const response = await fetch(url, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `Bearer ${user.accessToken ? user.accessToken : ' '}`,
+			},
+			body: JSON.stringify(data),
+		});
+		return response.json();
+	};
+
+	const putData = async (url = '', data = {}) => {
+		const response = await fetch(url, {
+			method: 'PUT',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `Bearer ${user.accessToken ? user.accessToken : null}`,
+			},
+			body: JSON.stringify(data),
+		});
+		return response.json();
+	};
+
+	const refreshToken = async () => {
+		try {
+			const response = await postData('http://localhost:8000/api/user/refreshtoken', {
+				token: user.refreshToken,
+			});
+			setUser({
+				...user,
+				accessToken: response.accessToken,
+				refreshToken: response.refreshToken,
+			});
+			return response;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	// Monkey patch the fetch function to add JWT token interceptor
+	const originalFetch = fetch;
+	const fetchJWT = async (url, options = {}) => {
+		let currentDate = new Date();
+		const decodedToken = jwt_decode(user.accessToken);
+
+		// Check if token needs to be refreshed
+		if (decodedToken.exp * 1000 < currentDate.getTime()) {
+			try {
+				console.log('refreshing token...');
+				const data = await refreshToken();
+				options.headers = {
+					...options.headers,
+					token: `Bearer ${data.accessToken ? data.accessToken : null}`,
+				};
+			} catch (error) {
+				console.log('Failed to refresh token:', error);
+			}
+		}
+
+		// Call the original fetch function with the modified options
+		return await originalFetch(url, options);
+	};
+
+	/* useEffect(() => {
 		let user = {};
 		if (sessionStorage.getItem('user')) {
 			user = JSON.parse(sessionStorage.getItem('user'));
 		}
 		setUser(user);
-	}, []);
+	}, []); */
 
-	useEffect(() => {
+	/* useEffect(() => {
 		sessionStorage.setItem('user', JSON.stringify(user));
-	}, [user]);
+		console.log(user);
+	}, [user]); */
 
-	const loginUser = (user) => {
-		postData('http://localhost:8000/api/user/login', user).then((data) => {
+	const loginUser = async (object) => {
+		let response = {};
+		await postData('http://localhost:8000/api/user/login', object).then((data) => {
 			if (!data.error) {
-				setUser(data.user);
+				setUser(data);
 			}
+			response = data;
 		});
+		return response;
 	};
 
-	const registerUser = (user) => {
-		postData('http://localhost:8000/api/user/register', user).then((data) => {
+	const registerUser = (object) => {
+		postData('http://localhost:8000/api/user/register', object).then((data) => {
 			if (!data.error) {
 				setUser(data.user);
 			}
@@ -59,9 +106,14 @@ export const UserProvider = ({ children }) => {
 
 	//comprobar
 	const logoutUser = () => {
-		postData('http://localhost:8000/api/user/logout').then((data) => {
+		let body = {
+			token: user.refreshToken,
+		};
+		postData(`http://localhost:8000/api/user/logout/${user._id}`, body).then((data) => {
 			if (!data.error) {
 				setUser({});
+
+				console.log('you logged out');
 			}
 		});
 	};
@@ -120,8 +172,11 @@ export const UserProvider = ({ children }) => {
 		<UserContext.Provider
 			value={{
 				user,
+				setUser,
+				fetchJWT,
 				loginUser,
 				registerUser,
+				logoutUser,
 				toggleFavorite,
 			}}
 		>

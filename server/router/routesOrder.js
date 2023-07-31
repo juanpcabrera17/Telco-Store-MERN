@@ -1,9 +1,12 @@
 const { Router } = require('express');
+const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require('../config/configAuth');
 const { controllerGetOrder, controllerPostOrder } = require('../controller/controllerOrder');
 const routerOrder = new Router();
 
-routerOrder.get('/:userId', controllerGetOrder);
+routerOrder.get('/:userId', verifyTokenAndAuthorization, controllerGetOrder);
 
-routerOrder.post('/', controllerPostOrder);
+routerOrder.post('/:userId', verifyTokenAndAuthorization, controllerPostOrder);
+
+//add admin routes
 
 module.exports = routerOrder;

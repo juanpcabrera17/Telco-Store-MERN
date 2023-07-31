@@ -27,10 +27,11 @@ export const LoginForm = () => {
 							email: '',
 							password: '',
 						}}
-						onSubmit={(values) => {
-							console.log('values: ' + JSON.stringify(values));
-							loginUser(values);
-							navigate('/shop');
+						onSubmit={async (values) => {
+							const response = await loginUser(values);
+							if (!response.error) {
+								navigate('/shop');
+							}
 						}}
 					>
 						{({ errors, touched, isValidating }) => (

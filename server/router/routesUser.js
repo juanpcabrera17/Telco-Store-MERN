@@ -1,12 +1,14 @@
 const { Router } = require('express');
-const { passport } = require('../config/configServer');
+const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require('../config/configAuth');
 const {
 	controllerGetUsers,
 	controllerGetUserById,
-	controllerPostRegister,
-	controllerPostLogin,
 	controllerPutUserById,
 	controllerDeleteUserById,
+	controllerPostRegister,
+	controllerPostLogin,
+	controllerPostRefreshToken,
+	controllerPostLogout,
 
 	/* controllerGetLogin,
 	controllerPostLogin,
@@ -19,15 +21,19 @@ const {
 } = require('../controller/controllerUser');
 const routerUser = new Router();
 
-routerUser.get('/', controllerGetUsers);
+routerUser.get('/', verifyTokenAndAdmin, controllerGetUsers);
 
-routerUser.get('/:userId', controllerGetUserById);
-routerUser.put('/:userId', controllerPutUserById);
-routerUser.delete('/:userId', controllerDeleteUserById);
+routerUser.get('/:userId', verifyTokenAndAuthorization, controllerGetUserById);
+routerUser.put('/:userId', verifyTokenAndAuthorization, controllerPutUserById);
+routerUser.delete('/:userId', verifyTokenAndAuthorization, controllerDeleteUserById);
 
-routerUser.post('/register', passport.authenticate('signup'), controllerPostRegister);
+routerUser.post('/register', controllerPostRegister);
 
-routerUser.post('/login', passport.authenticate('login'), controllerPostLogin);
+routerUser.post('/login', controllerPostLogin);
+
+routerUser.post('/refreshtoken', controllerPostRefreshToken);
+
+routerUser.post('/logout/:userId', verifyTokenAndAuthorization, controllerPostLogout);
 
 /* routerUser.get('/faillogin', controllerGetFailLogin);
 
@@ -39,7 +45,6 @@ routerUser.get('/signup', controllerGetSignup); */
 ); */
 
 /* routerUser.get('/failsignup', controllerGetFailSignup);
-routerUser.get('/logout', controllerGetLogout);
 routerUser.get('/info', controllerGetInfo); */
 
 module.exports = routerUser;

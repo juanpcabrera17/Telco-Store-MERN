@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useUser } from '../context/UserContext';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { FiLock } from 'react-icons/fi';
-
-const postData = async (url = '', data = {}) => {
-	const response = await fetch(url, {
-		method: 'POST',
-		credentials: 'include',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	});
-	return response.json();
-};
 
 const checkoutSchema = Yup.object().shape({
 	firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -31,12 +20,26 @@ export const Checkout = () => {
 	const [showModal, setShowModal] = useState(true);
 	const [shippingData, setShippingData] = useState({});
 	const [shippingMethod, setShippingMethod] = useState('FedEx');
+	const { user, fetchJWT } = useUser();
 
 	const [shippingCharge, setShippingCharge] = useState(0);
 
 	const checkout = JSON.parse(localStorage.getItem('checkout'));
 	const products = checkout.cart;
-	const user = JSON.parse(sessionStorage.getItem('user'));
+	/* const user = JSON.parse(sessionStorage.getItem('user')); */
+
+	const postData = async (url = '', data = {}) => {
+		const response = await fetchJWT(url, {
+			method: 'POST',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				token: `Bearer ${user.accessToken ? user.accessToken : ' '}`,
+			},
+			body: JSON.stringify(data),
+		});
+		return response.json();
+	};
 
 	//add shipping charge on order
 	useEffect(() => {
@@ -58,7 +61,7 @@ export const Checkout = () => {
 		});
 	}, []);
 
-	const handleOrder = () => {
+	const handleOrder = async () => {
 		let order = {
 			user: user,
 			checkout: checkout,
@@ -66,7 +69,7 @@ export const Checkout = () => {
 			status: 'Pending',
 		};
 
-		postData('http://localhost:8000/api/order', order).then((data) => {
+		await postData(`http://localhost:8000/api/order/${user._id}`, order).then((data) => {
 			if (!data.error) {
 			}
 		});
@@ -310,7 +313,6 @@ export const Checkout = () => {
 										}}
 										validationSchema={checkoutSchema}
 										onSubmit={(values) => {
-											console.log('values: ' + JSON.stringify(values));
 											setShippingData({
 												...values,
 												shippingCharge: shippingCharge,

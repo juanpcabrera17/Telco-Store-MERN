@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require('../config/configAuth');
 const {
 	controllerGetCart,
 	controllerPostCart,
@@ -9,13 +10,13 @@ const {
 /* const { checkAuthentication } = require('../controller/controllerUsuario'); */
 const routerCart = new Router();
 
-routerCart.get('/:userId', /* checkAuthentication */ controllerGetCart);
+routerCart.get('/:userId', verifyTokenAndAuthorization, controllerGetCart);
 
-routerCart.post('/', controllerPostCart);
+routerCart.post('/', verifyTokenAndAuthorization, controllerPostCart); //obsolete, useCart() instead
 
-routerCart.put('/:userId', controllerPutCart);
+routerCart.put('/:userId', controllerPutCart); //obsolete, useCart() instead
 
-routerCart.delete('/:userId', controllerDeleteCartById);
+routerCart.delete('/:userId', controllerDeleteCartById); //obsolete, useCart() instead
 
 /* routerCart.post('/', controllerPostPurchaseCart); */
 

@@ -1,13 +1,10 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const { engine } = require('express-handlebars');
 const { loggerWarn, loggerError } = require('./configWinston');
-const { passport } = require('./configAuth');
-const session = require('express-session');
 const path = require('path');
 const compression = require('compression');
-const MongoStore = require('connect-mongo');
+/* const MongoStore = require('connect-mongo'); */
 const mongoose = require('mongoose');
 if (process.env.MODE != 'PRODUCTION') {
 	require('dotenv').config();
@@ -25,7 +22,7 @@ mongoose
 		throw 'can not connect to the mongo!';
 	});
 
-app.use(
+/* app.use(
 	session({
 		store: MongoStore.create({
 			mongoUrl: MongoDBconnection,
@@ -33,20 +30,20 @@ app.use(
 				useNewUrlParser: true,
 				useUnifiedTopology: true,
 			},
-			/* ttl: 60,
+			 ttl: 60,
 			cookie: {
 				maxAge: 600000,
-			}, */
+			}, 
 		}),
 		secret: 'secreto',
 		resave: false,
 		saveUninitialized: false,
 	})
-);
+); */
 
-app.set('view engine', 'hbs');
-app.set('views', path.join(process.cwd(), '/views'));
-app.engine(
+/* app.set('view engine', 'hbs');
+app.set('views', path.join(process.cwd(), '/views')); */
+/* app.engine(
 	'hbs',
 	engine({
 		extname: '.hbs',
@@ -54,7 +51,7 @@ app.engine(
 		layoutsDir: path.join(process.cwd(), 'views/layouts'),
 		partialsDir: path.join(process.cwd(), 'views/partials'),
 	})
-);
+); */
 
 /* app.use(
 	cors({
@@ -63,8 +60,8 @@ app.engine(
 ); */
 app.use(cors({ credentials: true, origin: 'http://127.0.0.1:5173' }));
 app.use(express.static('public', { index: false }));
-app.use(passport.initialize());
-app.use(passport.session());
+/* app.use(passport.initialize()); */
+/* app.use(passport.session()); */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(compression());
@@ -73,4 +70,4 @@ app.use((req, res, next) => {
 	next();
 });
 
-module.exports = { app, passport, chatContainer, PORT };
+module.exports = { app, chatContainer, PORT };

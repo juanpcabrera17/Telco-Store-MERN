@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require('../config/configAuth');
 const {
 	controllerGetProducts,
 	controllerGetProductsByCategory,
@@ -8,15 +9,14 @@ const {
 	controllerGetProductById,
 	/* controllerGetProductsTest, */
 } = require('../controller/controllerProducts');
-/* const { checkAuthentication } = require('../controller/controllerUsuario'); */
 const routerProducts = new Router();
 
-routerProducts.get('/', /* checkAuthentication */ controllerGetProducts);
-routerProducts.post('/', controllerPostProduct);
+routerProducts.get('/', controllerGetProducts);
+routerProducts.post('/', verifyTokenAndAdmin, controllerPostProduct);
 
 routerProducts.get('/:productId', controllerGetProductById);
-routerProducts.put('/:productId', controllerPutProductById);
-routerProducts.delete('/:productId', controllerDeleteProductById);
+routerProducts.put('/:productId', verifyTokenAndAdmin, controllerPutProductById);
+routerProducts.delete('/:productId', verifyTokenAndAdmin, controllerDeleteProductById);
 
 /* routerProducts.get('/test', checkAuthentication controllerGetProductsTest); */
 

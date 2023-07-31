@@ -5,7 +5,6 @@ import { useUser } from '../context/UserContext';
 
 export const Favorites = () => {
 	const { user, toggleFavorite } = useUser();
-	console.log(user.favorites);
 
 	return (
 		<div className="flex items-center flex-col ">
@@ -14,7 +13,7 @@ export const Favorites = () => {
 				<p className="text-gray-500">Manage your favorite products</p>
 			</div>
 
-			{user.favorites == '[]' ? (
+			{JSON.stringify(user.favorites) != '[]' ? (
 				<div className="w-3/4 relative overflow-x-auto shadow-md sm:rounded-lg">
 					<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 						<thead className="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
