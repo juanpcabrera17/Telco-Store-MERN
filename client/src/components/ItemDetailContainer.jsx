@@ -187,29 +187,21 @@ export const ItemDetailContainer = () => {
 							>
 								<HiOutlineShoppingBag className="mr-3 text-xl" /> Add to cart
 							</button>
-							{isFavorite ? (
-								<button
-									onClick={() => {
-										JSON.stringify(user) == '{}'
-											? navigate('/login')
-											: toggleFavorite(productId, product);
-									}}
-									className="flex items-center justify-center outline outline-2 outline-black border-0 px-4 transition duration-300 hover:bg-black hover:text-white rounded"
-								>
+
+							<button
+								onClick={() => {
+									JSON.stringify(user) == '{}'
+										? navigate('/login')
+										: toggleFavorite(productId, product);
+								}}
+								className="flex items-center justify-center outline outline-2 outline-black border-0 px-4 transition duration-300 hover:bg-black hover:text-white rounded"
+							>
+								{isFavorite ? (
 									<BiSolidHeart className="text-xl" />
-								</button>
-							) : (
-								<button
-									onClick={() => {
-										JSON.stringify(user) == '{}'
-											? navigate('/login')
-											: toggleFavorite(productId, product);
-									}}
-									className="flex items-center justify-center outline outline-2 outline-black border-0 px-4 transition duration-300 hover:bg-black hover:text-white rounded"
-								>
+								) : (
 									<BiHeart className="text-xl" />
-								</button>
-							)}
+								)}
+							</button>
 						</div>
 						<div className="p-5 flex justify-center">
 							<button className="m-auto w-4/5 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">

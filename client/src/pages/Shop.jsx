@@ -25,17 +25,21 @@ export const Shop = () => {
 	};
 
 	return (
-		<>
-			<Sort
-				options={['Newest', 'Price(asc)', 'Price(desc)']}
-				onChange={handleSortChange}
-			></Sort>
-
-			<div className="flex">
+		<div className="flex py-12 px-12 ">
+			<div className="w-32 font-medium flex flex-col items-start">
+				<span className="mb-2 font-semibold text-lg">Brand</span>
 				<Filters filters={filters} updateFilters={updateFilters} />
+			</div>
 
+			<div className="flex flex-col">
+				<div className="flex justify-end z-10 relative">
+					<Sort
+						options={['Newest', 'Price(asc)', 'Price(desc)']}
+						onChange={handleSortChange}
+					></Sort>
+				</div>
 				<ItemList category={category} sort={sort} filters={filters} />
 			</div>
-		</>
+		</div>
 	);
 };

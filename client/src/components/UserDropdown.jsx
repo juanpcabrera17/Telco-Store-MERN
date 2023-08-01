@@ -18,7 +18,7 @@ export const UserDropdown = () => {
 			<Menu.Button>
 				<FaRegUser
 					onClick={() => (JSON.stringify(user) == '{}' ? navigate('/login') : null)}
-					className="text-gray-300 hover:text-white text-2xl mr-4"
+					className="text-gray-300 hover:text-white text-2xl mr-3"
 				/>
 			</Menu.Button>
 

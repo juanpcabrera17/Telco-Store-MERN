@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { FaRegUser } from 'react-icons/fa6';
 import { IoCartOutline } from 'react-icons/io5';
+import { BiHeart } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserDropdown } from './UserDropdown';
 import { useUser } from '../context/UserContext';
@@ -36,7 +37,7 @@ export const Navbar = () => {
 								</Disclosure.Button>
 							</div>
 							<div className="flex flex-1 items-center justify-center sm:justify-between">
-								<Link to="/">
+								<Link to="/" className="z-10">
 									<div className="flex flex-shrink-0 items-center">
 										<img
 											className="block h-8 w-auto lg:hidden"
@@ -50,7 +51,7 @@ export const Navbar = () => {
 										/>
 									</div>
 								</Link>
-								<ul className="hidden justify-center items-center w-full sm:flex">
+								<ul className="hidden absolute justify-center items-center w-full sm:flex">
 									{/* Shop dropdown */}
 									<Menu
 										as="li"
@@ -166,16 +167,25 @@ export const Navbar = () => {
 								</ul>
 							</div>
 
-							<div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+							<div className="absolute inset-y-0 right-0 z-10 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 								{user.isAdmin ? (
 									<Link
 										to="/admin"
-										className="rounded-md px-3 py-1.5 mr-4 font-medium border-2 text-gray-300  border-green-700 hover:bg-green-700  dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 "
+										className="rounded-md px-3 py-1.5 mr-5 font-medium border-2 text-gray-300  border-green-700 hover:bg-green-700  dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 "
 									>
 										Admin
 									</Link>
 								) : null}
 								<UserDropdown />
+								<Link
+									to={
+										JSON.stringify(user) == '{}'
+											? '/login'
+											: `/favorites/${user._id}`
+									}
+								>
+									<BiHeart className="text-gray-300 hover:text-white text-3xl mr-3" />
+								</Link>
 								<Link
 									to={
 										JSON.stringify(user) == '{}'

@@ -6,6 +6,30 @@ export const UserContext = createContext();
 export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState({});
 
+	// Monkey patch the fetch function to add JWT token interceptor
+	const originalFetch = fetch;
+	const fetchJWT = async (url, options = {}) => {
+		let currentDate = new Date();
+		const decodedToken = jwt_decode(user.accessToken);
+
+		// Check if token needs to be refreshed
+		if (decodedToken.exp * 1000 < currentDate.getTime()) {
+			try {
+				console.log('refreshing token...');
+				const data = await refreshToken();
+				options.headers = {
+					...options.headers,
+					token: `Bearer ${data.accessToken ? data.accessToken : null}`,
+				};
+			} catch (error) {
+				console.log('Failed to refresh token:', error);
+			}
+		}
+
+		// Call the original fetch function with the modified options
+		return await originalFetch(url, options);
+	};
+
 	const postData = async (url = '', data = {}) => {
 		const response = await fetch(url, {
 			method: 'POST',
@@ -20,7 +44,7 @@ export const UserProvider = ({ children }) => {
 	};
 
 	const putData = async (url = '', data = {}) => {
-		const response = await fetch(url, {
+		const response = await fetchJWT(url, {
 			method: 'PUT',
 			credentials: 'include',
 			headers: {
@@ -46,30 +70,6 @@ export const UserProvider = ({ children }) => {
 		} catch (err) {
 			console.log(err);
 		}
-	};
-
-	// Monkey patch the fetch function to add JWT token interceptor
-	const originalFetch = fetch;
-	const fetchJWT = async (url, options = {}) => {
-		let currentDate = new Date();
-		const decodedToken = jwt_decode(user.accessToken);
-
-		// Check if token needs to be refreshed
-		if (decodedToken.exp * 1000 < currentDate.getTime()) {
-			try {
-				console.log('refreshing token...');
-				const data = await refreshToken();
-				options.headers = {
-					...options.headers,
-					token: `Bearer ${data.accessToken ? data.accessToken : null}`,
-				};
-			} catch (error) {
-				console.log('Failed to refresh token:', error);
-			}
-		}
-
-		// Call the original fetch function with the modified options
-		return await originalFetch(url, options);
 	};
 
 	/* useEffect(() => {
@@ -133,6 +133,7 @@ export const UserProvider = ({ children }) => {
 				favorites: [...user.favorites, product],
 			});
 		}
+		console.log(user);
 	};
 
 	/* const getUser = (user) => { */
