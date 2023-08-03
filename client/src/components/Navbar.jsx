@@ -20,7 +20,7 @@ export const Navbar = () => {
 	const { cartQuantity } = useCart();
 
 	return (
-		<Disclosure as="nav" className="bg-gray-800 z-20 sticky">
+		<Disclosure as="nav" className="bg-sky-950 z-20 sticky">
 			{({ open }) => (
 				<>
 					<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -38,15 +38,10 @@ export const Navbar = () => {
 							</div>
 							<div className="flex flex-1 items-center justify-center sm:justify-between">
 								<Link to="/" className="z-10">
-									<div className="flex flex-shrink-0 items-center">
+									<div className="flex items-center">
 										<img
-											className="block h-8 w-auto lg:hidden"
-											src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-											alt="Your Company"
-										/>
-										<img
-											className="hidden h-8 w-auto lg:block"
-											src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+											className="block h-10 w-auto "
+											src="./assets/Logo1Dark.png"
 											alt="Your Company"
 										/>
 									</div>

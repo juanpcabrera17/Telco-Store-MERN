@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const CartContext = createContext();
 
@@ -22,7 +24,19 @@ export const CartProvider = ({ children }) => {
 		if (isInCart) {
 			const updatedCart = cart.map((cartItem) => {
 				if (cartItem._id === item._id) {
-					return { ...cartItem, quantity: cartItem.quantity + item.quantity };
+					const newQuantity = cartItem.quantity + item.quantity;
+					if (newQuantity > cartItem.stock) {
+						toast.error(
+							<div className="text-center">
+								Error adding to the cart: <br />
+								The stock limit is {15}
+							</div>
+						);
+						console.log(`Stock limit is ${cartItem.stock}`);
+						return { ...cartItem, quantity: cartItem.stock };
+					} else {
+						return { ...cartItem, quantity: newQuantity };
+					}
 				}
 				return cartItem;
 			});
@@ -49,7 +63,16 @@ export const CartProvider = ({ children }) => {
 	};
 
 	return (
-		<CartContext.Provider value={{ cart, addItem, removeItem, clear, cartQuantity, cartTotal }}>
+		<CartContext.Provider
+			value={{
+				cart,
+				addItem,
+				removeItem,
+				clear,
+				cartQuantity,
+				cartTotal,
+			}}
+		>
 			{children}
 		</CartContext.Provider>
 	);

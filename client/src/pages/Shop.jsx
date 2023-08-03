@@ -38,7 +38,7 @@ export const Shop = () => {
 						onChange={handleSortChange}
 					></Sort>
 				</div>
-				<ItemList category={category} sort={sort} filters={filters} />
+				<ItemList category={category} sort={sort} filters={filters} itemsPerPage={16} />
 			</div>
 		</div>
 	);

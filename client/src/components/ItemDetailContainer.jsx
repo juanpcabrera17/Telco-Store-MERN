@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ItemCount } from './ItemCount';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { BiHeart, BiSolidHeart } from 'react-icons/bi';
+import { ToastContainer, toast } from 'react-toastify';
+/* import 'react-toastify/dist/ReactToastify.css'; */
 import { useCart } from '../context/CartContext';
 import { useUser } from '../context/UserContext';
 
@@ -182,7 +184,9 @@ export const ItemDetailContainer = () => {
 								setQuantity={setQuantity}
 							/>
 							<button
-								onClick={onAdd}
+								onClick={() => {
+									JSON.stringify(user) == '{}' ? navigate('/login') : onAdd();
+								}}
 								className=" flex items-center justify-center w-2/5 outline outline-2 outline-black border-0 px-6 transition duration-300 hover:bg-black hover:text-white rounded"
 							>
 								<HiOutlineShoppingBag className="mr-3 text-xl" /> Add to cart
@@ -203,6 +207,7 @@ export const ItemDetailContainer = () => {
 								)}
 							</button>
 						</div>
+						{/* {stockLimit ? toast('Error') : null} */}
 						<div className="p-5 flex justify-center">
 							<button className="m-auto w-4/5 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
 								Buy now
@@ -211,6 +216,18 @@ export const ItemDetailContainer = () => {
 					</div>
 				</div>
 			</div>
+			<ToastContainer
+				position="bottom-center"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="dark"
+			/>
 		</section>
 	);
 };
