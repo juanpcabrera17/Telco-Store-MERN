@@ -96,12 +96,15 @@ export const UserProvider = ({ children }) => {
 		return response;
 	};
 
-	const registerUser = (object) => {
-		postData('http://localhost:8000/api/user/register', object).then((data) => {
+	const registerUser = async (object) => {
+		let response = {};
+		await postData('http://localhost:8000/api/user/register', object).then((data) => {
 			if (!data.error) {
 				setUser(data.user);
 			}
+			response = data;
 		});
+		return response;
 	};
 
 	//comprobar

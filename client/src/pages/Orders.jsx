@@ -10,7 +10,7 @@ const getDate = (date) => {
 	const month = String(createdAtDate.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so we add 1
 	const day = String(createdAtDate.getDate()).padStart(2, '0');
 
-	const formattedDate = `${year}/${month}/${day}`;
+	const formattedDate = `${month}/${day}/${year}`;
 	return formattedDate;
 };
 

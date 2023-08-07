@@ -40,75 +40,48 @@ export const UserDropdown = () => {
 				>
 					<div className="py-1">
 						<Menu.Item>
-							{({ active }) => (
-								<span
-									className={classNames(
-										active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-										'block px-4 py-2 text-sm'
-									)}
-								>
-									Hi {user.firstName}
-								</span>
-							)}
+							<span className="text-gray-900 block px-4 py-2 font-semibold cursor-default">
+								Hi {user.firstName}
+							</span>
 						</Menu.Item>
 					</div>
 					<div className="py-1">
 						<Menu.Item>
-							{({ active }) => (
-								<Link
-									to={`/orders/${user._id}`}
-									className={classNames(
-										active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-										'block px-4 py-2 text-sm'
-									)}
-								>
-									Orders
-								</Link>
-							)}
+							<Link
+								to={`/orders/${user._id}`}
+								className="block px-4 py-2 text-gray-600 hover:text-black hover:translate-x-2 transition ease-in-out duration-300"
+							>
+								Orders
+							</Link>
 						</Menu.Item>
 						<Menu.Item>
-							{({ active }) => (
-								<Link
-									to={`/favorites/${user._id}`}
-									href="#"
-									className={classNames(
-										active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-										'block px-4 py-2 text-sm'
-									)}
-								>
-									Favorites
-								</Link>
-							)}
+							<Link
+								to={`/favorites/${user._id}`}
+								href="#"
+								className="block px-4 py-2 text-gray-600 hover:text-black hover:translate-x-2 transition ease-in-out duration-300"
+							>
+								Favorites
+							</Link>
 						</Menu.Item>
 					</div>
 					<div className="py-1">
 						<Menu.Item>
-							{({ active }) => (
-								<Link
-									to={`/profile/${user._id}`}
-									className={classNames(
-										active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-										'block px-4 py-2 text-sm'
-									)}
-								>
-									My profile
-								</Link>
-							)}
+							<Link
+								to={`/profile/${user._id}`}
+								className="block px-4 py-2 text-gray-600 hover:text-black hover:translate-x-2 transition ease-in-out duration-300"
+							>
+								My profile
+							</Link>
 						</Menu.Item>
 						<Menu.Item>
-							{({ active }) => (
-								<button
-									onClick={() => {
-										logoutUser(), navigate('/shop');
-									}}
-									className={classNames(
-										active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-										'block px-4 py-2 text-sm'
-									)}
-								>
-									Log out
-								</button>
-							)}
+							<button
+								onClick={() => {
+									logoutUser(), navigate('/shop');
+								}}
+								className="block px-4 py-2 text-gray-600 hover:text-black hover:translate-x-2 transition ease-in-out duration-300"
+							>
+								Log out
+							</button>
 						</Menu.Item>
 					</div>
 				</Menu.Items>

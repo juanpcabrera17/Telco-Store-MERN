@@ -61,7 +61,7 @@ const controllerPostRegister = async (req, res) => {
 		const user = await User.findOne({ email: req.body.email });
 		if (user) {
 			loggerWarn.warn('User already exists');
-			return res.status(400).json({ error: 'User already exists' });
+			return res.status(401).json({ error: 'User already exists' });
 		}
 		const newUser = {
 			firstName: req.body.firstName,
@@ -111,7 +111,7 @@ const controllerPostLogin = async (req, res) => {
 		}
 		if (!isValidPassword(user, req.body.password)) {
 			loggerWarn.warn('Invalid password');
-			return res.status(400).json({ error: 'Incorrect email or password' });
+			return res.status(401).json({ error: 'Incorrect email or password' });
 		}
 		const accessToken = jwt.sign(
 			{

@@ -43,7 +43,7 @@ export const Favorites = () => {
 									className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
 								>
 									<td className="w-32 p-4">
-										<img src={product.thumbnail} alt="Apple Watch" />
+										<img src={product.thumbnail} />
 									</td>
 									<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
 										{product.name}

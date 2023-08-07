@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useUser } from '../context/UserContext';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { FiLock } from 'react-icons/fi';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const checkoutSchema = Yup.object().shape({
 	firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
@@ -17,10 +21,10 @@ const checkoutSchema = Yup.object().shape({
 
 export const Checkout = () => {
 	const [toggleShipping, setToggleShipping] = useState(true);
-	const [showModal, setShowModal] = useState(true);
 	const [shippingData, setShippingData] = useState({});
 	const [shippingMethod, setShippingMethod] = useState('FedEx');
 	const { user, fetchJWT } = useUser();
+	const navigate = useNavigate();
 
 	const [shippingCharge, setShippingCharge] = useState(0);
 
@@ -71,6 +75,12 @@ export const Checkout = () => {
 
 		await postData(`http://localhost:8000/api/order/${user._id}`, order).then((data) => {
 			if (!data.error) {
+				toast.success('Your order has been placed successfully!');
+				setTimeout(() => {
+					localStorage.removeItem('checkout');
+					localStorage.removeItem('cart');
+					navigate(`/orders/${user._id}`);
+				}, 5000);
 			}
 		});
 	};
@@ -209,7 +219,7 @@ export const Checkout = () => {
 							>
 								<img
 									className="w-14 object-contain"
-									src="/images/naorrAeygcJzX0SyNI4Y0.png"
+									src="https://i.ibb.co/s3cHT3t/fedex.png"
 									alt=""
 								/>
 								<div className="ml-5">
@@ -238,7 +248,7 @@ export const Checkout = () => {
 							>
 								<img
 									className="w-14 object-contain"
-									src="/images/oG8xsl3xsOkwkMsrLGKM4.png"
+									src="https://i.ibb.co/nkf2T4S/dhl.jpg"
 									alt=""
 								/>
 								<div className="ml-5">
@@ -296,8 +306,17 @@ export const Checkout = () => {
 									id="modal"
 									className={`${
 										!toggleShipping ? 'flex' : 'hidden'
-									} bg-white px-10 py-6 mt-10 flex flex-col justify-center items-center w-1/2`}
+									} bg-white px-10 py-6 mt-10 flex flex-col justify-center items-center w-1/2 rounded-lg`}
 								>
+									<div className="flex flex-1 justify-end w-full z-30">
+										<button onClick={() => setToggleShipping(true)}>
+											<span className="sr-only">Dismiss</span>
+											<XMarkIcon
+												className="h-5 w-5 text-gray-900"
+												aria-hidden="true"
+											/>
+										</button>
+									</div>
 									<span className=" text-xl  font-semibold leading-10 text-center text-gray-800 md:w-9/12 lg:w-7/12">
 										Enter your shipping data
 									</span>
@@ -648,6 +667,18 @@ export const Checkout = () => {
 					</div>
 				</div>
 			</div>
+			<ToastContainer
+				position="bottom-center"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="dark"
+			/>
 		</div>
 	);
 };

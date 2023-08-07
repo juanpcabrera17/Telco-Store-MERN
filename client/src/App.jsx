@@ -14,6 +14,7 @@ import { Checkout } from './pages/Checkout';
 import { Profile } from './pages/Profile';
 import { Orders } from './pages/Orders';
 import { Favorites } from './pages/Favorites';
+import { Admin } from './pages/Admin';
 
 function App() {
 	return (
@@ -34,6 +35,7 @@ function App() {
 							<Route path="/profile/:userid" element={<Profile />} />
 							<Route path="/orders/:userid" element={<Orders />} />
 							<Route path="/favorites/:userid" element={<Favorites />} />
+							<Route path="/admin" element={<Admin />} />
 
 							{/* <Route path="*" element={<NoMatch />} /> */}
 

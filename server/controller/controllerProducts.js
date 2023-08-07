@@ -39,9 +39,9 @@ const controllerGetProducts = async (req, res) => {
 const controllerPostProduct = async (req, res) => {
 	const newProduct = await postProduct(req.body);
 	if (newProduct) {
-		res.status(201).send('product added successfully!');
+		res.status(201).send({ newProduct });
 	} else {
-		res.send('error');
+		res.status(500).send('error');
 	}
 };
 

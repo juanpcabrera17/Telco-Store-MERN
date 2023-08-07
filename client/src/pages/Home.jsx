@@ -29,7 +29,7 @@ export const Home = () => {
 			order: 'lg:order-1',
 		},
 		{
-			backgroundImage: './assets/fondo_routing.jpg',
+			backgroundImage: 'https://i.ibb.co/qshPZQ8/fondo-routing.jpg',
 			imageClasses: '',
 			backgroundColor: 'bg-red-50',
 			title: 'Routing equipment.',
@@ -40,7 +40,7 @@ export const Home = () => {
 			order: 'lg:order-3',
 		},
 		{
-			backgroundImage: './assets/fondo_switching.jpg',
+			backgroundImage: 'https://i.ibb.co/2MMdz4t/fondo-switching.jpg',
 			imageClasses: '',
 			backgroundColor: 'bg-yellow-50',
 			title: 'Switching equipment.',
