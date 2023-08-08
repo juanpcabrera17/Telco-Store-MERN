@@ -121,8 +121,8 @@ export const Navbar = () => {
 										<div className="flex items-center">
 											<img
 												className="block h-10 w-auto "
-												src="./assets/Logo1Dark.png"
-												alt="Your Company"
+												src="https://i.ibb.co/C10C7rX/Logo1-Dark.png"
+												alt="Telco Store"
 											/>
 										</div>
 									</Link>

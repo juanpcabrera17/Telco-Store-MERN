@@ -99,7 +99,7 @@ export const ItemList = ({ category, sort, filters, itemsPerPage }) => {
 					<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 						{subset.map((product) => (
 							<div key={product._id} className="group">
-								<div className=" aspect-h-1 bg-indigo-100 aspect-w-1  relative w-full overflow-hidden rounded-lg  xl:aspect-h-8 xl:aspect-w-7    ">
+								<div className=" aspect-h-1 bg-sky-100 aspect-w-1  relative w-full overflow-hidden rounded-lg  xl:aspect-h-8 xl:aspect-w-7    ">
 									<img
 										src={product.thumbnail}
 										className="h-full w-full object-center ease-in-out duration-500 group-hover:blur-sm group-hover:scale-110 object-contain"

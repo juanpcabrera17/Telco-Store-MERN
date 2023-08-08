@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar';
+import { Footer } from './components/Footer';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
 import { CartProvider } from './context/CartContext';
 import { Home } from './pages/Home';
-
 import { Cart } from './pages/Cart';
 import { Shop } from './pages/Shop';
 import { Login } from './pages/Login';
@@ -23,6 +23,7 @@ function App() {
 				<CartProvider>
 					<BrowserRouter>
 						<Navbar />
+
 						<Routes>
 							<Route path="/" element={<Home />} />
 							<Route path="/shop/:category" element={<Shop />} />
@@ -41,6 +42,7 @@ function App() {
 
 							{/* <Route path="/cart" element={<Cart />} /> */}
 						</Routes>
+						<Footer />
 					</BrowserRouter>
 				</CartProvider>
 			</UserProvider>
