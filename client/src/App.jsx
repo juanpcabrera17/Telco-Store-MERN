@@ -15,6 +15,10 @@ import { Profile } from './pages/Profile';
 import { Orders } from './pages/Orders';
 import { Favorites } from './pages/Favorites';
 import { Admin } from './pages/Admin';
+import { About } from './pages/About';
+import { Contact } from './pages/Contact';
+import { Faqs } from './pages/Faqs';
+import { NoMatch } from './pages/NoMatch';
 
 function App() {
 	return (
@@ -23,7 +27,6 @@ function App() {
 				<CartProvider>
 					<BrowserRouter>
 						<Navbar />
-
 						<Routes>
 							<Route path="/" element={<Home />} />
 							<Route path="/shop/:category" element={<Shop />} />
@@ -37,8 +40,10 @@ function App() {
 							<Route path="/orders/:userid" element={<Orders />} />
 							<Route path="/favorites/:userid" element={<Favorites />} />
 							<Route path="/admin" element={<Admin />} />
-
-							{/* <Route path="*" element={<NoMatch />} /> */}
+							<Route path="/about" element={<About />} />
+							<Route path="/contact" element={<Contact />} />
+							<Route path="/faqs" element={<Faqs />} />
+							<Route path="*" element={<NoMatch />} />
 
 							{/* <Route path="/cart" element={<Cart />} /> */}
 						</Routes>

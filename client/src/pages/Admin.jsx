@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaUsers, FaClipboardList } from 'react-icons/fa6';
 import { HiShoppingBag } from 'react-icons/hi';
 import { ProductsTable } from '../components/ProductsTable';
+import { useUser } from '../context/UserContext';
 
 export const Admin = () => {
 	const [section, setSection] = useState('products');
+	const { user } = useUser();
+	const navigate = useNavigate();
 
-	/* useEffect(()=>{
-		
-	},[section]) */
+	useEffect(() => {
+		console.log(user);
+		if (!user.isAdmin) {
+			navigate('/');
+		}
+	}, [user]);
 
 	const selectSection = (section) => {
 		{

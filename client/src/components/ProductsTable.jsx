@@ -156,7 +156,7 @@ export const ProductsTable = () => {
 																key={product._id}
 																className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
 															>
-																<td className="w-32 p-4">
+																<td className="w-32 h-32 p-4">
 																	<img src={product.thumbnail} />
 																</td>
 																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
@@ -252,6 +252,7 @@ export const ProductsTable = () => {
 										price: toggleEditModal.product.price,
 										stock: toggleEditModal.product.stock,
 										thumbnail: toggleEditModal.product.thumbnail,
+										thumbnail2: toggleEditModal.product.thumbnail2,
 										category: toggleEditModal.product.category,
 										description: toggleEditModal.product.description,
 									}}
@@ -362,7 +363,7 @@ export const ProductsTable = () => {
 													</div>
 												</div>
 
-												<div className="sm:col-span-6">
+												<div className="sm:col-span-3">
 													<label
 														htmlFor="thumbnail"
 														className="block text-sm font-medium leading-6 text-gray-900"
@@ -379,6 +380,26 @@ export const ProductsTable = () => {
 														/>
 														{errors.thumbnail && touched.thumbnail ? (
 															<div>{errors.thumbnail}</div>
+														) : null}
+													</div>
+												</div>
+												<div className="sm:col-span-3">
+													<label
+														htmlFor="thumbnail2"
+														className="block text-sm font-medium leading-6 text-gray-900"
+													>
+														Second thumbnail url
+													</label>
+													<div className="mt-2">
+														<Field
+															type="text"
+															name="thumbnail2"
+															id="thumbnail2"
+															autoComplete="given-name"
+															className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+														/>
+														{errors.thumbnail2 && touched.thumbnail2 ? (
+															<div>{errors.thumbnail2}</div>
 														) : null}
 													</div>
 												</div>
@@ -458,6 +479,7 @@ export const ProductsTable = () => {
 												price: '',
 												stock: '',
 												thumbnail: '',
+												thumbnail2: '',
 												category: '',
 												description: '',
 											}}
@@ -582,6 +604,27 @@ export const ProductsTable = () => {
 																{errors.thumbnail &&
 																touched.thumbnail ? (
 																	<div>{errors.thumbnail}</div>
+																) : null}
+															</div>
+														</div>
+														<div className="sm:col-span-6">
+															<label
+																htmlFor="thumbnail2"
+																className="block text-sm font-medium leading-6 text-gray-900"
+															>
+																Second thumbnail url
+															</label>
+															<div className="mt-2">
+																<Field
+																	type="text"
+																	name="thumbnail2"
+																	id="thumbnail2"
+																	autoComplete="given-name"
+																	className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+																/>
+																{errors.thumbnail2 &&
+																touched.thumbnail2 ? (
+																	<div>{errors.thumbnail2}</div>
 																) : null}
 															</div>
 														</div>

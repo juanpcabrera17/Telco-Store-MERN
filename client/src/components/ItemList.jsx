@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import { useUser } from '../context/UserContext';
+import { useCart } from '../context/CartContext';
 import { AiOutlineEye } from 'react-icons/ai';
 import { BiHeart, BiSolidHeart } from 'react-icons/bi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
+import { ToastContainer } from 'react-toastify';
 
 export const ItemList = ({ category, sort, filters, itemsPerPage }) => {
 	const [products, setProducts] = useState([]);
@@ -14,7 +16,15 @@ export const ItemList = ({ category, sort, filters, itemsPerPage }) => {
 	const [currentPage, setCurrentPage] = useState(0);
 	const [totalPages, setTotalPages] = useState(0);
 	const { user, toggleFavorite } = useUser();
+	const { addItem } = useCart();
+
 	const navigate = useNavigate();
+
+	const onAdd = (product) => {
+		let { _id, name, price, stock, thumbnail, category } = product;
+		let cartItem = { _id, name, price, stock, thumbnail, category, quantity: 1 };
+		addItem(cartItem);
+	};
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -99,10 +109,10 @@ export const ItemList = ({ category, sort, filters, itemsPerPage }) => {
 					<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 						{subset.map((product) => (
 							<div key={product._id} className="group">
-								<div className=" aspect-h-1 bg-sky-100 aspect-w-1  relative w-full overflow-hidden rounded-lg  xl:aspect-h-8 xl:aspect-w-7    ">
+								<div className=" bg-sky-100 relative w-full overflow-hidden rounded-lg  xl:aspect-h-8 xl:aspect-w-7    ">
 									<img
 										src={product.thumbnail}
-										className="h-full w-full object-center ease-in-out duration-500 group-hover:blur-sm group-hover:scale-110 object-contain"
+										className="p-5 object-center ease-in-out duration-500 group-hover:blur-sm group-hover:scale-110 object-contain"
 									/>
 									<div className="absolute inset-0 flex items-center justify-center group  opacity-0 transition-opacity duration-500 group-hover:opacity-100">
 										<div className="flex absolute top-3 right-3 justify-end ">
@@ -131,7 +141,14 @@ export const ItemList = ({ category, sort, filters, itemsPerPage }) => {
 												<AiOutlineEye className="mr-2 text-lg" /> Item
 												details
 											</Link>
-											<button className="flex items-center bg-white transition duration-300 group-hover:translate-x-0 translate-x-5 hover:bg-black hover:text-white border-2 border-black text-sm font-semibold py-2 px-4 rounded-full m-2">
+											<button
+												onClick={() => {
+													JSON.stringify(user) == '{}'
+														? navigate('/login')
+														: onAdd(product);
+												}}
+												className="flex items-center bg-white transition duration-300 group-hover:translate-x-0 translate-x-5 hover:bg-black hover:text-white border-2 border-black text-sm font-semibold py-2 px-4 rounded-full m-2"
+											>
 												<HiOutlineShoppingBag className="mr-2 text-lg" />
 												Add to cart
 											</button>
@@ -281,6 +298,18 @@ export const ItemList = ({ category, sort, filters, itemsPerPage }) => {
 					</div> */}
 				</div>
 			)}
+			<ToastContainer
+				position="bottom-center"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="dark"
+			/>
 		</div>
 	);
 };

@@ -51,7 +51,7 @@ export const UserDropdown = () => {
 								to={`/orders/${user._id}`}
 								className="block px-4 py-2 text-gray-600 hover:text-black hover:translate-x-2 transition ease-in-out duration-300"
 							>
-								Orders
+								Order history
 							</Link>
 						</Menu.Item>
 						<Menu.Item>

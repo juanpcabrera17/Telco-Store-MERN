@@ -11,7 +11,7 @@ import {
 
 export const Footer = () => {
 	return (
-		<footer className="bg-white dark:bg-gray-900">
+		<footer className="bg-white dark:bg-gray-900 relative z-40">
 			<div className="mx-auto w-full max-w-screen-xl px-9 py-6 lg:py-8">
 				<div className="md:flex md:justify-between items-center">
 					<div className="">

@@ -7,7 +7,7 @@ export const Favorites = () => {
 	const { user, toggleFavorite } = useUser();
 
 	return (
-		<div className="flex items-center flex-col ">
+		<div className="flex items-center flex-col min-h-screen">
 			<div className="w-3/4 py-12 ml-5">
 				<h2 className="font-bold text-2xl my-2">Your Favorites</h2>
 				<p className="text-gray-500">Manage your favorite products</p>

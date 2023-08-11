@@ -22,7 +22,7 @@ export const Sort = ({ options, onChange }) => {
 					<BiSolidChevronDown
 						className={`${
 							isOpen ? 'rotate-180' : null
-						} text-black ml-1 text-lg focus: transition ease-in-out duration-300`}
+						} text-black ml-1 text-lg transition ease-in-out duration-300`}
 					/>
 				</Listbox.Button>
 				<Transition

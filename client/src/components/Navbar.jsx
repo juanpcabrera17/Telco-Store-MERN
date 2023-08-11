@@ -27,7 +27,7 @@ export const Navbar = () => {
 	return (
 		<>
 			{banner ? (
-				<div className=" w-full relative bg-sky-100 flex p-2 z-30">
+				<div className=" w-full relative bg-sky-100 flex py-2 z-30">
 					{/* //relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5
 				sm:px-3.5 sm:before:flex-1" */}
 					<Swiper
@@ -67,6 +67,12 @@ export const Navbar = () => {
 						</SwiperSlide>
 						<SwiperSlide className="-z-10 !w-auto mx-3 ">
 							<span>FREE SHIPPING FOR ALL ORDERS FROM $100</span>
+						</SwiperSlide>
+						<SwiperSlide className="-z-10 !w-auto mx-3 ">
+							<span>-</span>
+						</SwiperSlide>
+						<SwiperSlide className="-z-10 !w-auto mx-3 ">
+							<span>THIS SITE IS A DEMO</span>
 						</SwiperSlide>
 						<SwiperSlide className="-z-10 !w-auto mx-3 ">
 							<span>-</span>
@@ -218,7 +224,7 @@ export const Navbar = () => {
 												to="/about"
 												className="text-gray-300 py-1 mx-3 font-medium border-b-0 bg-[linear-gradient(#d1d5db,#d1d5db)] bg-[size:0_3px] bg-left-bottom bg-no-repeat ease-in-out duration-300 hover:bg-[size:100%_3px]"
 											>
-												About us
+												About
 											</Link>
 										</li>
 										<li className=" ">

@@ -67,9 +67,8 @@ export const Shop = () => {
 					<span className="mb-2 font-semibold text-lg">Brand</span>
 					<Filters filters={filters} updateFilters={updateFilters} />
 				</div>
-
-				<div className="flex flex-col">
-					<div className="flex justify-end z-10 relative">
+				<div className="flex flex-col w-full">
+					<div className="flex justify-end z-10 relative pb-5">
 						<Sort
 							options={['Newest', 'Price(asc)', 'Price(desc)']}
 							onChange={handleSortChange}

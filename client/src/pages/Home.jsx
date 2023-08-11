@@ -116,7 +116,7 @@ export const Home = () => {
 				))}
 			</Swiper>
 
-			<Featured />
+			<Featured category={null} />
 		</div>
 	);
 };

@@ -29,7 +29,7 @@ export const CartProvider = ({ children }) => {
 						toast.error(
 							<div className="text-center">
 								Error adding to the cart: <br />
-								The stock limit is {15}
+								The stock limit is {cartItem.stock}
 							</div>
 						);
 						console.log(`Stock limit is ${cartItem.stock}`);
