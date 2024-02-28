@@ -73,7 +73,10 @@ export const Checkout = () => {
 			status: 'Pending',
 		};
 
-		await postData(`http://localhost:8000/api/order/${user._id}`, order).then((data) => {
+		await postData(
+			`https://us-central1-telco-store-mern.cloudfunctions.net/api/api/order/${user._id}`,
+			order
+		).then((data) => {
 			if (!data.error) {
 				toast.success('Your order has been placed successfully!');
 				setTimeout(() => {

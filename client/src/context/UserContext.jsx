@@ -58,9 +58,12 @@ export const UserProvider = ({ children }) => {
 
 	const refreshToken = async () => {
 		try {
-			const response = await postData('http://localhost:8000/api/user/refreshtoken', {
-				token: user.refreshToken,
-			});
+			const response = await postData(
+				'https://us-central1-telco-store-mern.cloudfunctions.net/api/api/user/refreshtoken',
+				{
+					token: user.refreshToken,
+				}
+			);
 			setUser({
 				...user,
 				accessToken: response.accessToken,
@@ -87,7 +90,10 @@ export const UserProvider = ({ children }) => {
 
 	const loginUser = async (object) => {
 		let response = {};
-		await postData('http://localhost:8000/api/user/login', object).then((data) => {
+		await postData(
+			'https://us-central1-telco-store-mern.cloudfunctions.net/api/api/user/login',
+			object
+		).then((data) => {
 			if (!data.error) {
 				setUser(data);
 			}
@@ -98,7 +104,10 @@ export const UserProvider = ({ children }) => {
 
 	const registerUser = async (object) => {
 		let response = {};
-		await postData('http://localhost:8000/api/user/register', object).then((data) => {
+		await postData(
+			'https://us-central1-telco-store-mern.cloudfunctions.net/api/api/user/register',
+			object
+		).then((data) => {
 			if (!data.error) {
 				setUser(data.user);
 			}
@@ -112,7 +121,10 @@ export const UserProvider = ({ children }) => {
 		let body = {
 			token: user.refreshToken,
 		};
-		postData(`http://localhost:8000/api/user/logout/${user._id}`, body).then((data) => {
+		postData(
+			`https://us-central1-telco-store-mern.cloudfunctions.net/api/api/user/logout/${user._id}`,
+			body
+		).then((data) => {
 			if (!data.error) {
 				setUser({});
 
@@ -127,14 +139,20 @@ export const UserProvider = ({ children }) => {
 				...user,
 				favorites: user.favorites.filter((product) => product._id !== productId),
 			});
-			putData(`http://localhost:8000/api/user/${user._id}`, {
-				favorites: user.favorites.filter((product) => product._id !== productId),
-			});
+			putData(
+				`https://us-central1-telco-store-mern.cloudfunctions.net/api/api/user/${user._id}`,
+				{
+					favorites: user.favorites.filter((product) => product._id !== productId),
+				}
+			);
 		} else {
 			setUser({ ...user, favorites: [...user.favorites, product] });
-			putData(`http://localhost:8000/api/user/${user._id}`, {
-				favorites: [...user.favorites, product],
-			});
+			putData(
+				`https://us-central1-telco-store-mern.cloudfunctions.net/api/api/user/${user._id}`,
+				{
+					favorites: [...user.favorites, product],
+				}
+			);
 		}
 		console.log(user);
 	};

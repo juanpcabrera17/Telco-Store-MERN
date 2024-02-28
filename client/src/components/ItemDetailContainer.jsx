@@ -49,9 +49,12 @@ export const ItemDetailContainer = () => {
 
 		const fetchData = async () => {
 			try {
-				const response = await fetch(`http://localhost:8000/api/product/${productId}`, {
-					credentials: 'include',
-				});
+				const response = await fetch(
+					`https://us-central1-telco-store-mern.cloudfunctions.net/api/api/product/${productId}`,
+					{
+						credentials: 'include',
+					}
+				);
 				const responseData = await response.json();
 				setProduct(await responseData.product[0]);
 			} catch (error) {

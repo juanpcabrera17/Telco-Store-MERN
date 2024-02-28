@@ -22,12 +22,15 @@ export const Orders = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await fetchJWT(`http://localhost:8000/api/order/${userid}`, {
-					credentials: 'include',
-					headers: {
-						token: `Bearer ${user.accessToken ? user.accessToken : null}`,
-					},
-				});
+				const response = await fetchJWT(
+					`https://us-central1-telco-store-mern.cloudfunctions.net/api/api/order/${userid}`,
+					{
+						credentials: 'include',
+						headers: {
+							token: `Bearer ${user.accessToken ? user.accessToken : null}`,
+						},
+					}
+				);
 				const responseData = await response.json();
 				setOrders(await responseData.orders);
 			} catch (error) {

@@ -31,8 +31,8 @@ export const ItemList = ({ category, sort, filters, itemsPerPage }) => {
 			try {
 				const response = await fetch(
 					category
-						? `http://localhost:8000/api/product?category=${category}`
-						: 'http://localhost:8000/api/product',
+						? `https://us-central1-telco-store-mern.cloudfunctions.net/api/api/product?category=${category}`
+						: 'https://us-central1-telco-store-mern.cloudfunctions.net/api/api/product',
 					{
 						credentials: 'include',
 					}

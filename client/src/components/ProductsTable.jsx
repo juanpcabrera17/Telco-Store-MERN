@@ -75,7 +75,7 @@ export const ProductsTable = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const response = await fetch('http://localhost:8000/api/product', {
+				const response = await fetch('https://us-central1-telco-store-mern.cloudfunctions.net/api/api/product', {
 					credentials: 'include',
 				});
 				const responseData = await response.json();
@@ -113,12 +113,8 @@ export const ProductsTable = () => {
 						<div className=" bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8  ">
 							<div className="mb-4 flex items-center justify-between ">
 								<div>
-									<h3 className="text-xl font-bold text-gray-900 mb-2">
-										Product List
-									</h3>
-									<span className="text-base font-normal text-gray-500">
-										Remove or edit products
-									</span>
+									<h3 className="text-xl font-bold text-gray-900 mb-2">Product List</h3>
+									<span className="text-base font-normal text-gray-500">Remove or edit products</span>
 								</div>
 							</div>
 							<div className="flex flex-col mt-8">
@@ -152,28 +148,15 @@ export const ProductsTable = () => {
 												<tbody>
 													{subset.map((product) => (
 														<>
-															<tr
-																key={product._id}
-																className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-															>
+															<tr key={product._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 																<td className="w-32 h-32 p-4">
 																	<img src={product.thumbnail} />
 																</td>
-																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-																	{product.name}
-																</td>
-																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-																	{product.category}
-																</td>
-																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-																	{getDate(product.updatedAt)}
-																</td>
-																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-																	${product.price}
-																</td>
-																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-																	{product.stock}
-																</td>
+																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{product.name}</td>
+																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{product.category}</td>
+																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{getDate(product.updatedAt)}</td>
+																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">${product.price}</td>
+																<td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">{product.stock}</td>
 																<td className="px-6 py-4 font-semibold ">
 																	<button
 																		onClick={() =>
@@ -228,24 +211,14 @@ export const ProductsTable = () => {
 					</div>
 					{JSON.stringify(toggleEditModal) !== '{}' ? (
 						<div className="w-full fixed bottom-0 top-0 left-0 z-10 flex justify-center items-center backdrop-blur-sm">
-							<div
-								id="modal"
-								className={`${
-									toggleEditModal ? 'flex' : 'hidden'
-								} bg-white px-10 py-6 pb-8 mt-16 ml-16 flex flex-col justify-center items-center w-2/3 rounded-lg`}
-							>
+							<div id="modal" className={`${toggleEditModal ? 'flex' : 'hidden'} bg-white px-10 py-6 pb-8 mt-16 ml-16 flex flex-col justify-center items-center w-2/3 rounded-lg`}>
 								<div className="flex flex-1 justify-end w-full z-30">
 									<button onClick={() => setToggleEditModal({})}>
 										<span className="sr-only">Dismiss</span>
-										<XMarkIcon
-											className="h-5 w-5 text-gray-900"
-											aria-hidden="true"
-										/>
+										<XMarkIcon className="h-5 w-5 text-gray-900" aria-hidden="true" />
 									</button>
 								</div>
-								<span className=" text-xl  font-semibold leading-10 text-center text-gray-800 md:w-9/12 lg:w-7/12">
-									Product data
-								</span>
+								<span className=" text-xl  font-semibold leading-10 text-center text-gray-800 md:w-9/12 lg:w-7/12">Product data</span>
 								<Formik
 									initialValues={{
 										name: toggleEditModal.product.name,
@@ -258,19 +231,10 @@ export const ProductsTable = () => {
 									}}
 									validationSchema={productSchema}
 									onSubmit={async (values) => {
-										const response = await putData(
-											`http://localhost:8000/api/product/${toggleEditModal.product._id}`,
-											values
-										);
+										const response = await putData(`https://us-central1-telco-store-mern.cloudfunctions.net/api/api/product/${toggleEditModal.product._id}`, values);
 										if (!response.error) {
 											console.log(values);
-											setProducts(
-												products.map((product) =>
-													product._id === toggleEditModal.product._id
-														? { ...product, ...values }
-														: product
-												)
-											);
+											setProducts(products.map((product) => (product._id === toggleEditModal.product._id ? { ...product, ...values } : product)));
 										} else {
 											console.log(response.error);
 										}
@@ -280,10 +244,7 @@ export const ProductsTable = () => {
 										<Form>
 											<div className="mt-7 grid grid-cols-1 gap-6 sm:grid-cols-6">
 												<div className="sm:col-span-6">
-													<label
-														htmlFor="name"
-														className="block text-sm font-medium leading-6 text-gray-900"
-													>
+													<label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
 														Name
 													</label>
 													<div className="mt-2">
@@ -294,17 +255,12 @@ export const ProductsTable = () => {
 															autoComplete="address-level2"
 															className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 														/>
-														{errors.name && touched.name ? (
-															<div>{errors.name}</div>
-														) : null}
+														{errors.name && touched.name ? <div>{errors.name}</div> : null}
 													</div>
 												</div>
 
 												<div className="sm:col-span-2 sm:col-start-1">
-													<label
-														htmlFor="category"
-														className="block text-sm font-medium leading-6 text-gray-900"
-													>
+													<label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
 														Category
 													</label>
 													<div className="mt-2">
@@ -315,17 +271,12 @@ export const ProductsTable = () => {
 															autoComplete="address-level1"
 															className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 														/>
-														{errors.category && touched.category ? (
-															<div>{errors.category}</div>
-														) : null}
+														{errors.category && touched.category ? <div>{errors.category}</div> : null}
 													</div>
 												</div>
 
 												<div className="sm:col-span-2">
-													<label
-														htmlFor="price"
-														className="block text-sm font-medium leading-6 text-gray-900"
-													>
+													<label htmlFor="price" className="block text-sm font-medium leading-6 text-gray-900">
 														Price
 													</label>
 													<div className="mt-2">
@@ -336,17 +287,12 @@ export const ProductsTable = () => {
 															autoComplete="address-level1"
 															className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 														/>
-														{errors.price && touched.price ? (
-															<div>{errors.price}</div>
-														) : null}
+														{errors.price && touched.price ? <div>{errors.price}</div> : null}
 													</div>
 												</div>
 
 												<div className="sm:col-span-2">
-													<label
-														htmlFor="stock"
-														className="block text-sm font-medium leading-6 text-gray-900"
-													>
+													<label htmlFor="stock" className="block text-sm font-medium leading-6 text-gray-900">
 														Stock
 													</label>
 													<div className="mt-2">
@@ -357,17 +303,12 @@ export const ProductsTable = () => {
 															autoComplete="stock"
 															className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 														/>
-														{errors.stock && touched.stock ? (
-															<div>{errors.stock}</div>
-														) : null}
+														{errors.stock && touched.stock ? <div>{errors.stock}</div> : null}
 													</div>
 												</div>
 
 												<div className="sm:col-span-3">
-													<label
-														htmlFor="thumbnail"
-														className="block text-sm font-medium leading-6 text-gray-900"
-													>
+													<label htmlFor="thumbnail" className="block text-sm font-medium leading-6 text-gray-900">
 														Thumbnail url
 													</label>
 													<div className="mt-2">
@@ -378,16 +319,11 @@ export const ProductsTable = () => {
 															autoComplete="given-name"
 															className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 														/>
-														{errors.thumbnail && touched.thumbnail ? (
-															<div>{errors.thumbnail}</div>
-														) : null}
+														{errors.thumbnail && touched.thumbnail ? <div>{errors.thumbnail}</div> : null}
 													</div>
 												</div>
 												<div className="sm:col-span-3">
-													<label
-														htmlFor="thumbnail2"
-														className="block text-sm font-medium leading-6 text-gray-900"
-													>
+													<label htmlFor="thumbnail2" className="block text-sm font-medium leading-6 text-gray-900">
 														Second thumbnail url
 													</label>
 													<div className="mt-2">
@@ -398,16 +334,11 @@ export const ProductsTable = () => {
 															autoComplete="given-name"
 															className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 														/>
-														{errors.thumbnail2 && touched.thumbnail2 ? (
-															<div>{errors.thumbnail2}</div>
-														) : null}
+														{errors.thumbnail2 && touched.thumbnail2 ? <div>{errors.thumbnail2}</div> : null}
 													</div>
 												</div>
 												<div className="sm:col-span-6">
-													<label
-														htmlFor="description"
-														className="block text-sm font-medium leading-6 text-gray-900"
-													>
+													<label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
 														Description
 													</label>
 													<div className="mt-2">
@@ -419,10 +350,7 @@ export const ProductsTable = () => {
 															autoComplete="given-name"
 															className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 														/>
-														{errors.description &&
-														touched.description ? (
-															<div>{errors.description}</div>
-														) : null}
+														{errors.description && touched.description ? <div>{errors.description}</div> : null}
 													</div>
 												</div>
 											</div>
@@ -431,10 +359,7 @@ export const ProductsTable = () => {
 												<button
 													prevent
 													onClick={(e) => {
-														e.preventDefault(),
-															deleteProduct(
-																`http://localhost:8000/api/product/${toggleEditModal.product._id}`
-															);
+														e.preventDefault(), deleteProduct(`https://us-central1-telco-store-mern.cloudfunctions.net/api/api/product/${toggleEditModal.product._id}`);
 													}}
 													className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center w-2/4"
 												>
@@ -462,12 +387,8 @@ export const ProductsTable = () => {
 						<div className=" bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8  ">
 							<div className="mb-4 flex items-center justify-between ">
 								<div>
-									<h3 className="text-xl font-bold text-gray-900 mb-2">
-										New Product
-									</h3>
-									<span className="text-base font-normal text-gray-500">
-										Add a product
-									</span>
+									<h3 className="text-xl font-bold text-gray-900 mb-2">New Product</h3>
+									<span className="text-base font-normal text-gray-500">Add a product</span>
 								</div>
 							</div>
 							<div className="flex flex-col mt-8">
@@ -486,10 +407,7 @@ export const ProductsTable = () => {
 											validationSchema={productSchema}
 											onSubmit={async (values) => {
 												console.log(values);
-												const response = await postData(
-													'http://localhost:8000/api/product',
-													values
-												);
+												const response = await postData('https://us-central1-telco-store-mern.cloudfunctions.net/api/api/product', values);
 												if (!response.error) {
 													console.log(response.newProduct);
 													setProducts([...products, response.newProduct]);
@@ -502,10 +420,7 @@ export const ProductsTable = () => {
 												<Form>
 													<div className="mt-7 grid grid-cols-1 gap-6 sm:grid-cols-6">
 														<div className="sm:col-span-6">
-															<label
-																htmlFor="name"
-																className="block text-sm font-medium leading-6 text-gray-900"
-															>
+															<label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
 																Name
 															</label>
 															<div className="mt-2">
@@ -516,17 +431,12 @@ export const ProductsTable = () => {
 																	autoComplete="address-level2"
 																	className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 																/>
-																{errors.name && touched.name ? (
-																	<div>{errors.name}</div>
-																) : null}
+																{errors.name && touched.name ? <div>{errors.name}</div> : null}
 															</div>
 														</div>
 
 														<div className="sm:col-span-2 sm:col-start-1">
-															<label
-																htmlFor="category"
-																className="block text-sm font-medium leading-6 text-gray-900"
-															>
+															<label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
 																Category
 															</label>
 															<div className="mt-2">
@@ -537,18 +447,12 @@ export const ProductsTable = () => {
 																	autoComplete="address-level1"
 																	className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 																/>
-																{errors.category &&
-																touched.category ? (
-																	<div>{errors.category}</div>
-																) : null}
+																{errors.category && touched.category ? <div>{errors.category}</div> : null}
 															</div>
 														</div>
 
 														<div className="sm:col-span-2">
-															<label
-																htmlFor="price"
-																className="block text-sm font-medium leading-6 text-gray-900"
-															>
+															<label htmlFor="price" className="block text-sm font-medium leading-6 text-gray-900">
 																Price
 															</label>
 															<div className="mt-2">
@@ -559,17 +463,12 @@ export const ProductsTable = () => {
 																	autoComplete="address-level1"
 																	className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 																/>
-																{errors.price && touched.price ? (
-																	<div>{errors.price}</div>
-																) : null}
+																{errors.price && touched.price ? <div>{errors.price}</div> : null}
 															</div>
 														</div>
 
 														<div className="sm:col-span-2">
-															<label
-																htmlFor="stock"
-																className="block text-sm font-medium leading-6 text-gray-900"
-															>
+															<label htmlFor="stock" className="block text-sm font-medium leading-6 text-gray-900">
 																Stock
 															</label>
 															<div className="mt-2">
@@ -580,17 +479,12 @@ export const ProductsTable = () => {
 																	autoComplete="stock"
 																	className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 																/>
-																{errors.stock && touched.stock ? (
-																	<div>{errors.stock}</div>
-																) : null}
+																{errors.stock && touched.stock ? <div>{errors.stock}</div> : null}
 															</div>
 														</div>
 
 														<div className="sm:col-span-6">
-															<label
-																htmlFor="thumbnail"
-																className="block text-sm font-medium leading-6 text-gray-900"
-															>
+															<label htmlFor="thumbnail" className="block text-sm font-medium leading-6 text-gray-900">
 																Thumbnail url
 															</label>
 															<div className="mt-2">
@@ -601,17 +495,11 @@ export const ProductsTable = () => {
 																	autoComplete="given-name"
 																	className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 																/>
-																{errors.thumbnail &&
-																touched.thumbnail ? (
-																	<div>{errors.thumbnail}</div>
-																) : null}
+																{errors.thumbnail && touched.thumbnail ? <div>{errors.thumbnail}</div> : null}
 															</div>
 														</div>
 														<div className="sm:col-span-6">
-															<label
-																htmlFor="thumbnail2"
-																className="block text-sm font-medium leading-6 text-gray-900"
-															>
+															<label htmlFor="thumbnail2" className="block text-sm font-medium leading-6 text-gray-900">
 																Second thumbnail url
 															</label>
 															<div className="mt-2">
@@ -622,17 +510,11 @@ export const ProductsTable = () => {
 																	autoComplete="given-name"
 																	className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 																/>
-																{errors.thumbnail2 &&
-																touched.thumbnail2 ? (
-																	<div>{errors.thumbnail2}</div>
-																) : null}
+																{errors.thumbnail2 && touched.thumbnail2 ? <div>{errors.thumbnail2}</div> : null}
 															</div>
 														</div>
 														<div className="sm:col-span-6">
-															<label
-																htmlFor="description"
-																className="block text-sm font-medium leading-6 text-gray-900"
-															>
+															<label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
 																Description
 															</label>
 															<div className="mt-2">
@@ -644,10 +526,7 @@ export const ProductsTable = () => {
 																	autoComplete="given-name"
 																	className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 																/>
-																{errors.description &&
-																touched.description ? (
-																	<div>{errors.description}</div>
-																) : null}
+																{errors.description && touched.description ? <div>{errors.description}</div> : null}
 															</div>
 														</div>
 													</div>
